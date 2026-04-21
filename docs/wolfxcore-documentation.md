@@ -300,13 +300,16 @@ echo "SUPER_ADMIN_KEY=YOUR_KEY_HERE" >> /var/www/wolfxcore/.env
 
 Replace `YOUR_KEY_HERE` with the key you generated.
 
-**Step 3 — Clear the config cache:**
+**Step 3 — Clear the config cache and restart PHP-FPM:**
 
 ```bash
 cd /var/www/wolfxcore
 php artisan config:clear
 php artisan config:cache
+systemctl restart php8.3-fpm
 ```
+
+> OPcache is enabled with `validate_timestamps=0` for performance. This means PHP-FPM worker processes do **not** automatically notice when `bootstrap/cache/config.php` changes. You must restart PHP-FPM after every `config:cache` run, otherwise the live web process keeps serving the old cached config.
 
 > Store your key somewhere secure (e.g. a password manager). Anyone who knows this key can access the Super Admin panel.
 
@@ -362,6 +365,7 @@ php artisan migrate --force
 php artisan config:clear && php artisan config:cache
 php artisan route:clear && php artisan route:cache
 php artisan view:clear && php artisan view:cache
+systemctl restart php8.3-fpm
 supervisorctl restart wolfxcore-worker:*
 ```
 
