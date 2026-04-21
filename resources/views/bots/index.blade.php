@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap">
     @php
-        use wolfXcore\Http\Controllers\Admin\SuperAdminController;
+        use Pterodactyl\Http\Controllers\Admin\SuperAdminController;
         $logoUrl = SuperAdminController::getSiteLogo();
     @endphp
     <style>{!! SuperAdminController::getThemeCssBlock() !!}</style>

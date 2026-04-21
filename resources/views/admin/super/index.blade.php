@@ -162,8 +162,8 @@
      REPOSITORY CLONE FEATURE
 ═══════════════════════════════════════════════════════════ --}}
 @php
-    $repoCloneEnabled   = \wolfXcore\Models\Setting::where('key', \wolfXcore\Services\Files\RepoCloneService::SETTING_ENABLED)->value('value') ?? '1';
-    $repoCloneAllowlist = \wolfXcore\Models\Setting::where('key', \wolfXcore\Services\Files\RepoCloneService::SETTING_ALLOWLIST)->value('value') ?? \wolfXcore\Services\Files\RepoCloneService::DEFAULT_ALLOWLIST;
+    $repoCloneEnabled   = \Pterodactyl\Models\Setting::where('key', \Pterodactyl\Services\Files\RepoCloneService::SETTING_ENABLED)->value('value') ?? '1';
+    $repoCloneAllowlist = \Pterodactyl\Models\Setting::where('key', \Pterodactyl\Services\Files\RepoCloneService::SETTING_ALLOWLIST)->value('value') ?? \Pterodactyl\Services\Files\RepoCloneService::DEFAULT_ALLOWLIST;
 @endphp
 <div class="row">
     <div class="col-xs-12">
@@ -272,7 +272,7 @@
                     Controls the festive Christmas overlay: falling snow ❄, flying reindeers 🦌🛷🎅, string lights, jingle bells 🔔, and a <strong style="color:#ff8888;">Merry Christmas</strong> popup after every server deployment.
                 </p>
 
-                @php $xmasMode = \wolfXcore\Models\Setting::where('key','settings::christmas:mode')->value('value') ?? 'auto'; @endphp
+                @php $xmasMode = \Pterodactyl\Models\Setting::where('key','settings::christmas:mode')->value('value') ?? 'auto'; @endphp
 
                 <form action="{{ route('admin.super.christmas.save') }}" method="POST">
                     @csrf
@@ -374,7 +374,7 @@
 
 {{-- Stat Cards --}}
 <div class="row">
-    @foreach([['fa-users','Admins',$admins->count()],['fa-user','Total Users',\wolfXcore\Models\User::count()],['fa-server','Servers',\wolfXcore\Models\Server::count()],['fa-sitemap','Nodes',\wolfXcore\Models\Node::count()]] as $stat)
+    @foreach([['fa-users','Admins',$admins->count()],['fa-user','Total Users',\Pterodactyl\Models\User::count()],['fa-server','Servers',\Pterodactyl\Models\Server::count()],['fa-sitemap','Nodes',\Pterodactyl\Models\Node::count()]] as $stat)
     <div class="col-xs-6 col-sm-3">
         <div class="wxn-stat-box box">
             <div style="font-size:1.8rem;color:var(--wxn-neon);font-family:'Orbitron',monospace;">{{ $stat[2] }}</div>
@@ -901,7 +901,7 @@
                 {{-- Gateway status badges --}}
                 <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
                     @php
-                        $psKey  = \wolfXcore\Models\Setting::where('key','settings::payment:paystack_secret')->value('value');
+                        $psKey  = \Pterodactyl\Models\Setting::where('key','settings::payment:paystack_secret')->value('value');
                         $allGateways = [
                             ['id'=>'paystack','label'=>'Paystack','icon'=>'fa-bolt','configured'=>!empty($psKey)],
                             ['id'=>'paypal','label'=>'PayPal','icon'=>'fa-paypal','configured'=>false],
@@ -931,7 +931,7 @@
                             <input type="hidden" name="gateway" value="paystack">
                             <label class="wxn-label">PUBLIC KEY</label>
                             <input type="text" name="paystack_public" class="wxn-input"
-                                   value="{{ \wolfXcore\Models\Setting::where('key','settings::payment:paystack_public')->value('value') }}"
+                                   value="{{ \Pterodactyl\Models\Setting::where('key','settings::payment:paystack_public')->value('value') }}"
                                    placeholder="pk_live_..." autocomplete="off" style="margin-bottom:10px;">
                             <label class="wxn-label">SECRET KEY</label>
                             <input type="text" name="paystack_secret" class="wxn-input"
@@ -942,7 +942,7 @@
                             <label class="wxn-label">CURRENCY</label>
                             <select name="currency" class="wxn-input" style="margin-bottom:14px;">
                                 @foreach(['KES'=>'KES — Kenyan Shilling','NGN'=>'NGN — Nigerian Naira','GHS'=>'GHS — Ghanaian Cedi','ZAR'=>'ZAR — South African Rand','USD'=>'USD — US Dollar'] as $code=>$label)
-                                <option value="{{ $code }}" {{ (\wolfXcore\Models\Setting::where('key','settings::payment:currency')->value('value') ?? 'KES')===$code ? 'selected' : '' }}>{{ $label }}</option>
+                                <option value="{{ $code }}" {{ (\Pterodactyl\Models\Setting::where('key','settings::payment:currency')->value('value') ?? 'KES')===$code ? 'selected' : '' }}>{{ $label }}</option>
                                 @endforeach
                             </select>
                             <button type="submit" class="btn btn-sm btn-success wxn-btn-submit" style="width:100%;">

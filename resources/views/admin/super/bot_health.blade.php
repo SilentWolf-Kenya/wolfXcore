@@ -19,7 +19,7 @@
     // Summary tiles. The 24h numbers come from the append-only wxn_bot_crashes event log
     // (NOT from wxn_bot_health.crash_count_24h which is a 10-min token-bucket approximation
     // tuned for the breaker — totally unsuitable for reporting).
-    $totalBots          = \wolfXcore\Models\Server::count();
+    $totalBots          = \Pterodactyl\Models\Server::count();
     $pausedNow          = $paused->count();
     $since24h           = now()->subHours(24);
     // Crashes / OOM / restores all come from the append-only wxn_bot_crashes event log
@@ -107,7 +107,7 @@
                     <tbody>
                         @foreach($paused as $p)
                             @php
-                                $srv = \wolfXcore\Models\Server::find($p->server_id);
+                                $srv = \Pterodactyl\Models\Server::find($p->server_id);
                                 $cap = (int) ($srv?->memory ?? 0);
                                 $rss = $liveRss[$p->server_id] ?? null;
                                 $rssPct = ($cap > 0 && $rss !== null) ? round($rss / $cap * 100) : null;

@@ -41,7 +41,7 @@
             <span class="info-box-icon"><i class="fa fa-server"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Total Servers</span>
-                <span class="info-box-number">{{ \wolfXcore\Models\Server::count() }}</span>
+                <span class="info-box-number">{{ \Pterodactyl\Models\Server::count() }}</span>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
             <span class="info-box-icon"><i class="fa fa-users"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Users</span>
-                <span class="info-box-number">{{ \wolfXcore\Models\User::count() }}</span>
+                <span class="info-box-number">{{ \Pterodactyl\Models\User::count() }}</span>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
             <span class="info-box-icon"><i class="fa fa-sitemap"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Nodes</span>
-                <span class="info-box-number">{{ \wolfXcore\Models\Node::count() }}</span>
+                <span class="info-box-number">{{ \Pterodactyl\Models\Node::count() }}</span>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@
             <span class="info-box-icon"><i class="fa fa-tag"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Active Plans</span>
-                <span class="info-box-number">{{ \wolfXcore\Models\Plan::where('is_active', true)->count() }}</span>
+                <span class="info-box-number">{{ \Pterodactyl\Models\Plan::where('is_active', true)->count() }}</span>
             </div>
         </div>
     </div>

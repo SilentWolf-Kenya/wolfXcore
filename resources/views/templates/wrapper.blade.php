@@ -19,7 +19,7 @@
             <meta name="theme-color" content="#000500">
 
             @php
-                $wxnLogo = \wolfXcore\Http\Controllers\Admin\SuperAdminController::getSiteLogo();
+                $wxnLogo = \Pterodactyl\Http\Controllers\Admin\SuperAdminController::getSiteLogo();
                 $wxnLogoAbsolute = \Illuminate\Support\Str::startsWith($wxnLogo, 'http') ? $wxnLogo : config('app.url') . $wxnLogo;
             @endphp
             <link rel="icon" type="image/jpeg" href="{{ $wxnLogo }}">
@@ -63,9 +63,9 @@
         @include('layouts.scripts')
 
         @php
-            $wxnThemeCss   = \wolfXcore\Http\Controllers\Admin\SuperAdminController::getThemeCssBlock();
-            $wxnCustomCss  = \wolfXcore\Http\Controllers\Admin\SuperAdminController::getCustomCss();
-            $wxnThemeRaw   = \wolfXcore\Http\Controllers\Admin\SuperAdminController::getAllThemeSettings();
+            $wxnThemeCss   = \Pterodactyl\Http\Controllers\Admin\SuperAdminController::getThemeCssBlock();
+            $wxnCustomCss  = \Pterodactyl\Http\Controllers\Admin\SuperAdminController::getCustomCss();
+            $wxnThemeRaw   = \Pterodactyl\Http\Controllers\Admin\SuperAdminController::getAllThemeSettings();
         @endphp
         <style id="wxn-theme-vars">{!! $wxnThemeCss !!}</style>
         @if(!empty($wxnCustomCss))
@@ -80,7 +80,7 @@
         <div class="wxn-corner wxn-corner-bl"></div>
         <div class="wxn-corner wxn-corner-br"></div>
         @php
-            $wxnAnnouncement = \wolfXcore\Http\Controllers\Admin\SuperAdminController::getAnnouncement();
+            $wxnAnnouncement = \Pterodactyl\Http\Controllers\Admin\SuperAdminController::getAnnouncement();
             $wxnAnnColors = [
                 'success' => ['bg'=>'rgba(0,200,80,0.12)',  'border'=>'rgba(0,200,80,0.45)',  'text'=>'#00e676', 'icon'=>'fa-check-circle'],
                 'info'    => ['bg'=>'rgba(0,150,255,0.12)', 'border'=>'rgba(0,150,255,0.45)', 'text'=>'#4db8ff', 'icon'=>'fa-info-circle'],

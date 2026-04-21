@@ -14,7 +14,7 @@
   <meta name="theme-color" content="#00ff00">
 
   @php
-      $wxnLogo = \wolfXcore\Http\Controllers\Admin\SuperAdminController::getSiteLogo();
+      $wxnLogo = \Pterodactyl\Http\Controllers\Admin\SuperAdminController::getSiteLogo();
       $wxnLogoAbsolute = \Illuminate\Support\Str::startsWith($wxnLogo, 'http') ? $wxnLogo : config('app.url') . $wxnLogo;
   @endphp
   <link rel="icon" type="image/jpeg" href="{{ $wxnLogo }}">
@@ -692,7 +692,7 @@
   // ── Christmas Theme ──────────────────────────────────────────────────────
   (function() {
     @php
-      $xmasMode = \wolfXcore\Models\Setting::where('key','settings::christmas:mode')->value('value') ?? 'auto';
+      $xmasMode = \Pterodactyl\Models\Setting::where('key','settings::christmas:mode')->value('value') ?? 'auto';
       $m = (int)date('n'); $d = (int)date('j');
       $inSeason = ($m === 11 && $d >= 25) || $m === 12;
       $xmasActive = $xmasMode === 'on' || ($xmasMode === 'auto' && $inSeason);
