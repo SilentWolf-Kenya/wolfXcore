@@ -1,14 +1,14 @@
 <?php
 
-use wolfXcore\Enum\ResourceLimit;
+use Pterodactyl\Enum\ResourceLimit;
 use Illuminate\Support\Facades\Route;
-use wolfXcore\Http\Controllers\Api\Client;
-use wolfXcore\Http\Controllers\WalletController;
-use wolfXcore\Http\Middleware\Activity\ServerSubject;
-use wolfXcore\Http\Middleware\Activity\AccountSubject;
-use wolfXcore\Http\Middleware\RequireTwoFactorAuthentication;
-use wolfXcore\Http\Middleware\Api\Client\Server\ResourceBelongsToServer;
-use wolfXcore\Http\Middleware\Api\Client\Server\AuthenticateServerAccess;
+use Pterodactyl\Http\Controllers\Api\Client;
+use Pterodactyl\Http\Controllers\WalletController;
+use Pterodactyl\Http\Middleware\Activity\ServerSubject;
+use Pterodactyl\Http\Middleware\Activity\AccountSubject;
+use Pterodactyl\Http\Middleware\RequireTwoFactorAuthentication;
+use Pterodactyl\Http\Middleware\Api\Client\Server\ResourceBelongsToServer;
+use Pterodactyl\Http\Middleware\Api\Client\Server\AuthenticateServerAccess;
 
 /*
 |--------------------------------------------------------------------------

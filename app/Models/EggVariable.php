@@ -85,7 +85,7 @@ class EggVariable extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\wolfXcore\Models\Egg, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\Pterodactyl\Models\Egg, $this>
      */
     public function egg(): HasOne
     {
@@ -95,7 +95,7 @@ class EggVariable extends Model
     /**
      * Return server variables associated with this variable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\wolfXcore\Models\ServerVariable, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\ServerVariable, $this>
      */
     public function serverVariable(): HasMany
     {

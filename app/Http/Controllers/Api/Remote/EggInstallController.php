@@ -21,13 +21,13 @@ class EggInstallController extends Controller
      * Handle request to get script and installation information for a server
      * that is being created on the node.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function index(Request $request, string $uuid): JsonResponse
     {
         $node = $request->attributes->get('node');
 
-        /** @var \wolfXcore\Models\Server $server */
+        /** @var \Pterodactyl\Models\Server $server */
         $server = $this->repository->findFirstWhere([
             ['uuid', '=', $uuid],
             ['node_id', '=', $node->id],

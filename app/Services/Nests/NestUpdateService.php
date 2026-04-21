@@ -16,8 +16,8 @@ class NestUpdateService
     /**
      * Update a nest and prevent changing the author once it is set.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function handle(int $nest, array $data): void
     {

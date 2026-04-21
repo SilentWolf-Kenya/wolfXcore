@@ -33,7 +33,7 @@ class KeyCreationService
      * This will automatically generate an identifier and an encrypted token that are
      * stored in the database.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function handle(array $data, array $permissions = []): ApiKey
     {

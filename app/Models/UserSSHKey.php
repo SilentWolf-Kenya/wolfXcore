@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * \wolfXcore\Models\UserSSHKey.
+ * \Pterodactyl\Models\UserSSHKey.
  *
  * @property int $id
  * @property int $user_id
@@ -60,7 +60,7 @@ class UserSSHKey extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\User, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\User, $this>
      */
     public function user(): BelongsTo
     {

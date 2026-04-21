@@ -59,7 +59,7 @@ class LocationController extends ApplicationApiController
      * Store a new location on the Panel and return an HTTP/201 response code with the
      * new location attached.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function store(StoreLocationRequest $request): JsonResponse
     {
@@ -78,8 +78,8 @@ class LocationController extends ApplicationApiController
     /**
      * Update a location on the Panel and return the updated record to the user.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function update(UpdateLocationRequest $request, Location $location): array
     {
@@ -93,7 +93,7 @@ class LocationController extends ApplicationApiController
     /**
      * Delete a location from the Panel.
      *
-     * @throws \wolfXcore\Exceptions\Service\Location\HasActiveNodesException
+     * @throws \Pterodactyl\Exceptions\Service\Location\HasActiveNodesException
      */
     public function delete(DeleteLocationRequest $request, Location $location): Response
     {

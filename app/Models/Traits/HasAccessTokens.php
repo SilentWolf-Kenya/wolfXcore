@@ -12,7 +12,7 @@ use Pterodactyl\Extensions\Laravel\Sanctum\NewAccessToken;
 /**
  * @template TToken of \Laravel\Sanctum\Contracts\HasAbilities
  *
- * @mixin \wolfXcore\Models\Model
+ * @mixin \Pterodactyl\Models\Model
  */
 trait HasAccessTokens
 {

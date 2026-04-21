@@ -43,7 +43,7 @@ class LocationController extends Controller
     /**
      * Return the location view page.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function view(int $id): View
     {

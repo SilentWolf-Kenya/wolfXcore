@@ -34,7 +34,7 @@ class ServerVariableTransformer extends BaseTransformer
     /**
      * Return the parent service variable data.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeParent(EggVariable $variable): Item|NullResource
     {

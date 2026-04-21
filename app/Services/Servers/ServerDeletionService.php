@@ -38,7 +38,7 @@ class ServerDeletionService
      * Delete a server from the panel, clear any allocation notes, and remove any associated databases from hosts.
      *
      * @throws \Throwable
-     * @throws \wolfXcore\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\DisplayException
      */
     public function handle(Server $server): void
     {

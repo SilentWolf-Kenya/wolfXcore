@@ -326,7 +326,7 @@ class BotController extends Controller
 
                 $repo    = BotRepo::find($meta['repo_id'] ?? 0);
                 $plan    = Plan::find($payment->plan_id);
-                $user    = \wolfXcore\Models\User::find($payment->user_id);
+                $user    = \Pterodactyl\Models\User::find($payment->user_id);
                 $configs = $meta['configs'] ?? [];
 
                 $uuid = null;
@@ -442,12 +442,12 @@ class BotController extends Controller
     private function applyConfigsToServer(string $uuid, BotRepo $repo, array $configs): void
     {
         $server = Server::where('uuid', $uuid)->firstOrFail();
-        $egg    = \wolfXcore\Models\Egg::with('variables')->find($server->egg_id);
+        $egg    = \Pterodactyl\Models\Egg::with('variables')->find($server->egg_id);
 
         foreach ($configs as $key => $value) {
             $variable = $egg?->variables->firstWhere('env_variable', $key);
             if ($variable) {
-                \wolfXcore\Models\ServerVariable::updateOrCreate(
+                \Pterodactyl\Models\ServerVariable::updateOrCreate(
                     ['server_id' => $server->id, 'variable_id' => $variable->id],
                     ['variable_value' => $value]
                 );
@@ -456,7 +456,7 @@ class BotController extends Controller
 
         $gitVar = $egg?->variables->firstWhere('env_variable', 'GIT_ADDRESS');
         if ($gitVar) {
-            \wolfXcore\Models\ServerVariable::updateOrCreate(
+            \Pterodactyl\Models\ServerVariable::updateOrCreate(
                 ['server_id' => $server->id, 'variable_id' => $gitVar->id],
                 ['variable_value' => $repo->git_address]
             );
@@ -464,7 +464,7 @@ class BotController extends Controller
 
         $mainVar = $egg?->variables->firstWhere('env_variable', 'MAIN_FILE');
         if ($mainVar) {
-            \wolfXcore\Models\ServerVariable::updateOrCreate(
+            \Pterodactyl\Models\ServerVariable::updateOrCreate(
                 ['server_id' => $server->id, 'variable_id' => $mainVar->id],
                 ['variable_value' => $repo->main_file]
             );

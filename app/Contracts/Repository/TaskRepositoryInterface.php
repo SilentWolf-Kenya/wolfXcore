@@ -9,7 +9,7 @@ interface TaskRepositoryInterface extends RepositoryInterface
     /**
      * Get a task and the server relationship for that task.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function getTaskForJobProcess(int $id): Task;
 

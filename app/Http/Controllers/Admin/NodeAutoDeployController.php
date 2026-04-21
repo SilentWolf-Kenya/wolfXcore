@@ -25,7 +25,7 @@ class NodeAutoDeployController extends Controller
      * Generates a new API key for the logged-in user with only permission to read
      * nodes, and returns that as the deployment key for a node.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function __invoke(Request $request, Node $node): JsonResponse
     {

@@ -4,7 +4,7 @@ namespace Pterodactyl\Extensions\League\Fractal\Serializers;
 
 use League\Fractal\Serializer\ArraySerializer;
 
-class wolfXcoreSerializer extends ArraySerializer
+class PterodactylSerializer extends ArraySerializer
 {
     /**
      * Serialize an item.

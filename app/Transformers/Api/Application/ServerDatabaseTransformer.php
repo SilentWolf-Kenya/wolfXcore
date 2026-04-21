@@ -64,7 +64,7 @@ class ServerDatabaseTransformer extends BaseTransformer
     /**
      * Return the database host relationship for this server database.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeHost(Database $model): Item|NullResource
     {

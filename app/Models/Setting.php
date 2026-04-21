@@ -3,7 +3,7 @@
 namespace Pterodactyl\Models;
 
 /**
- * wolfXcore\Models\Setting.
+ * Pterodactyl\Models\Setting.
  *
  * @property int $id
  * @property string $key

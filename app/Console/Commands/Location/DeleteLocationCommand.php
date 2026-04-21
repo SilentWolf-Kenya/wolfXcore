@@ -28,8 +28,8 @@ class DeleteLocationCommand extends Command
     /**
      * Respond to the command request.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
-     * @throws \wolfXcore\Exceptions\Service\Location\HasActiveNodesException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Service\Location\HasActiveNodesException
      */
     public function handle()
     {

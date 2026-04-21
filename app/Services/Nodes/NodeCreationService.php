@@ -20,7 +20,7 @@ class NodeCreationService
     /**
      * Create a new node on the panel.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function handle(array $data): Node
     {

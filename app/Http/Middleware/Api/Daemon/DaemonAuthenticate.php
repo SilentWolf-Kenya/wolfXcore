@@ -48,7 +48,7 @@ class DaemonAuthenticate
         }
 
         try {
-            /** @var \wolfXcore\Models\Node $node */
+            /** @var \Pterodactyl\Models\Node $node */
             $node = $this->repository->findFirstWhere([
                 'daemon_token_id' => $parts[0],
             ]);

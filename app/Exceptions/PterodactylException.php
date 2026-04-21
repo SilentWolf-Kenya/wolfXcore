@@ -2,6 +2,6 @@
 
 namespace Pterodactyl\Exceptions;
 
-class wolfXcoreException extends \Exception
+class PterodactylException extends \Exception
 {
 }

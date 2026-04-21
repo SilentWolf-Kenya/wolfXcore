@@ -22,7 +22,7 @@ class SettingsRepository extends EloquentRepository implements SettingsRepositor
     /**
      * Store a new persistent setting in the database.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function set(string $key, ?string $value = null)
     {

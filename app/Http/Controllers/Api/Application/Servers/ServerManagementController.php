@@ -48,9 +48,9 @@ class ServerManagementController extends ApplicationApiController
     /**
      * Mark a server as needing to be reinstalled.
      *
-     * @throws \wolfXcore\Exceptions\DisplayException
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function reinstall(ServerWriteRequest $request, Server $server): Response
     {

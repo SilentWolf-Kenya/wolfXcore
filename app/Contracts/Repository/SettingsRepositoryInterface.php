@@ -7,8 +7,8 @@ interface SettingsRepositoryInterface extends RepositoryInterface
     /**
      * Store a new persistent setting in the database.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function set(string $key, ?string $value = null);
 

@@ -43,7 +43,7 @@ class NestTransformer extends BaseTransformer
     /**
      * Include the Eggs relationship on the given Nest model transformation.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeEggs(Nest $model): Collection|NullResource
     {
@@ -59,7 +59,7 @@ class NestTransformer extends BaseTransformer
     /**
      * Include the servers relationship on the given Nest model.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeServers(Nest $model): Collection|NullResource
     {

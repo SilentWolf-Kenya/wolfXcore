@@ -34,7 +34,7 @@ class BackupRemoteUploadController extends Controller
     public function __invoke(Request $request, string $backup): JsonResponse
     {
         // Get the node associated with the request.
-        /** @var \wolfXcore\Models\Node $node */
+        /** @var \Pterodactyl\Models\Node $node */
         $node = $request->attributes->get('node');
 
         // Get the size query parameter.

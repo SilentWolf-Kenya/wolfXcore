@@ -19,7 +19,7 @@ class NestCreationService
     /**
      * Create a new nest on the system.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function handle(array $data, ?string $author = null): Nest
     {

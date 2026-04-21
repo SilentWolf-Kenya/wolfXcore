@@ -45,8 +45,8 @@ class NetworkAllocationController extends ClientApiController
     /**
      * Set the primary allocation for a server.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function update(UpdateAllocationRequest $request, Server $server, Allocation $allocation): array
     {
@@ -69,8 +69,8 @@ class NetworkAllocationController extends ClientApiController
     /**
      * Set the primary allocation for a server.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function setPrimary(SetPrimaryAllocationRequest $request, Server $server, Allocation $allocation): array
     {

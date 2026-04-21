@@ -7,7 +7,7 @@ use Pterodactyl\Contracts\Http\ClientPermissionsRequest;
 use Pterodactyl\Http\Requests\Api\Application\ApplicationApiRequest;
 
 /**
- * @method \wolfXcore\Models\User user($guard = null)
+ * @method \Pterodactyl\Models\User user($guard = null)
  */
 class ClientApiRequest extends ApplicationApiRequest
 {

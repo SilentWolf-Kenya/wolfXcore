@@ -45,7 +45,7 @@ class DatabaseController extends Controller
     /**
      * Display database host to user.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function view(int $host): View
     {
@@ -114,7 +114,7 @@ class DatabaseController extends Controller
     /**
      * Handle request to delete a database host.
      *
-     * @throws \wolfXcore\Exceptions\Service\HasActiveServersException
+     * @throws \Pterodactyl\Exceptions\Service\HasActiveServersException
      */
     public function delete(int $host): RedirectResponse
     {

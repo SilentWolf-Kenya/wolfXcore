@@ -47,8 +47,8 @@ class StartupController extends ClientApiController
      * Updates a single variable for a server.
      *
      * @throws \Illuminate\Validation\ValidationException
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function update(UpdateStartupVariableRequest $request, Server $server): array
     {

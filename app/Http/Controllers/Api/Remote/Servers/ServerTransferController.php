@@ -77,7 +77,7 @@ class ServerTransferController extends Controller
             throw new HttpForbiddenException('Requesting node does not have permission to access this server.');
         }
 
-        /** @var \wolfXcore\Models\Server $server */
+        /** @var \Pterodactyl\Models\Server $server */
         $server = $this->connection->transaction(function () use ($server, $transfer) {
             $allocations = array_merge([$transfer->old_allocation], $transfer->old_additional_allocations);
 

@@ -112,7 +112,7 @@ class Task extends Model
     /**
      * Return the schedule that a task belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\Schedule, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Schedule, $this>
      */
     public function schedule(): BelongsTo
     {
@@ -122,7 +122,7 @@ class Task extends Model
     /**
      * Return the server a task is assigned to, acts as a belongsToThrough.
      *
-     * @return \Znck\Eloquent\Relations\BelongsToThrough<\wolfXcore\Models\Server, \wolfXcore\Models\Schedule>
+     * @return \Znck\Eloquent\Relations\BelongsToThrough<\Pterodactyl\Models\Server, \Pterodactyl\Models\Schedule>
      */
     public function server(): \Znck\Eloquent\Relations\BelongsToThrough
     {

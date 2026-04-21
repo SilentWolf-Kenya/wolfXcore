@@ -27,7 +27,7 @@ class RecoveryToken extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\User, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\User, $this>
      */
     public function user(): BelongsTo
     {

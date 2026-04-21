@@ -26,7 +26,7 @@ class ServerInstallController extends Controller
     /**
      * Returns installation information for a server.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function index(Request $request, string $uuid): JsonResponse
     {
@@ -47,8 +47,8 @@ class ServerInstallController extends Controller
     /**
      * Updates the installation state of a server.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function store(InstallationDataRequest $request, string $uuid): JsonResponse
     {

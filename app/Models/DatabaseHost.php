@@ -72,7 +72,7 @@ class DatabaseHost extends Model
     /**
      * Gets the node associated with a database host.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\Node, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Node, $this>
      */
     public function node(): BelongsTo
     {
@@ -82,7 +82,7 @@ class DatabaseHost extends Model
     /**
      * Gets the databases associated with this host.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\wolfXcore\Models\Database, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Database, $this>
      */
     public function databases(): HasMany
     {

@@ -21,7 +21,7 @@ class EggCreationService
     /**
      * Create a new service option and assign it to the given service.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      * @throws NoParentConfigurationFoundException
      */
     public function handle(array $data): Egg

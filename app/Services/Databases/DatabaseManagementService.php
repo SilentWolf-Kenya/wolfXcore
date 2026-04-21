@@ -19,7 +19,7 @@ class DatabaseManagementService
      * The regex used to validate that the database name passed through to the function is
      * in the expected format.
      *
-     * @see \wolfXcore\Services\Databases\DatabaseManagementService::generateUniqueDatabaseName()
+     * @see \Pterodactyl\Services\Databases\DatabaseManagementService::generateUniqueDatabaseName()
      */
     private const MATCH_NAME_REGEX = '/^(s[\d]+_)(.*)$/';
 

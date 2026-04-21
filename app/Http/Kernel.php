@@ -66,7 +66,7 @@ class Kernel extends HttpKernel
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             LanguageMiddleware::class,
-            \wolfXcore\Http\Middleware\SiteMaintenanceMiddleware::class,
+            \Pterodactyl\Http\Middleware\SiteMaintenanceMiddleware::class,
         ],
         'api' => [
             EnsureStatefulRequests::class,

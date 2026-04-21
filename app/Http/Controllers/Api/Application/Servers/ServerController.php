@@ -47,11 +47,11 @@ class ServerController extends ApplicationApiController
      *
      * @throws \Throwable
      * @throws \Illuminate\Validation\ValidationException
-     * @throws \wolfXcore\Exceptions\DisplayException
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
-     * @throws \wolfXcore\Exceptions\Service\Deployment\NoViableAllocationException
-     * @throws \wolfXcore\Exceptions\Service\Deployment\NoViableNodeException
+     * @throws \Pterodactyl\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Service\Deployment\NoViableAllocationException
+     * @throws \Pterodactyl\Exceptions\Service\Deployment\NoViableNodeException
      */
     public function store(StoreServerRequest $request): JsonResponse
     {
@@ -75,7 +75,7 @@ class ServerController extends ApplicationApiController
     /**
      * Deletes a server.
      *
-     * @throws \wolfXcore\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\DisplayException
      */
     public function delete(ServerWriteRequest $request, Server $server, string $force = ''): Response
     {

@@ -56,9 +56,9 @@ class SubuserController extends ClientApiController
     /**
      * Create a new subuser for the given server.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Service\Subuser\ServerSubuserExistsException
-     * @throws \wolfXcore\Exceptions\Service\Subuser\UserIsServerOwnerException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Service\Subuser\ServerSubuserExistsException
+     * @throws \Pterodactyl\Exceptions\Service\Subuser\UserIsServerOwnerException
      * @throws \Throwable
      */
     public function store(StoreSubuserRequest $request, Server $server): array
@@ -82,12 +82,12 @@ class SubuserController extends ClientApiController
     /**
      * Update a given subuser in the system for the server.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function update(UpdateSubuserRequest $request, Server $server): array
     {
-        /** @var \wolfXcore\Models\Subuser $subuser */
+        /** @var \Pterodactyl\Models\Subuser $subuser */
         $subuser = $request->attributes->get('subuser');
 
         $permissions = $this->getDefaultPermissions($request);
@@ -129,7 +129,7 @@ class SubuserController extends ClientApiController
      */
     public function delete(DeleteSubuserRequest $request, Server $server): JsonResponse
     {
-        /** @var \wolfXcore\Models\Subuser $subuser */
+        /** @var \Pterodactyl\Models\Subuser $subuser */
         $subuser = $request->attributes->get('subuser');
 
         $log = Activity::event('server:subuser.delete')

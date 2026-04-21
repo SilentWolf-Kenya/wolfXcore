@@ -95,7 +95,7 @@ class Database extends Model
     /**
      * Gets the host database server associated with a database.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\DatabaseHost, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\DatabaseHost, $this>
      */
     public function host(): BelongsTo
     {
@@ -105,7 +105,7 @@ class Database extends Model
     /**
      * Gets the server associated with a database.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\Server, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Server, $this>
      */
     public function server(): BelongsTo
     {

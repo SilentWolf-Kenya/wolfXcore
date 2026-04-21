@@ -59,7 +59,7 @@ class AppSettingsCommand extends Command
     /**
      * Handle command execution.
      *
-     * @throws \wolfXcore\Exceptions\wolfXcoreException
+     * @throws \Pterodactyl\Exceptions\wolfXcoreException
      */
     public function handle(): int
     {

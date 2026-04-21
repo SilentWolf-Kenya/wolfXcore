@@ -12,8 +12,8 @@ use Pterodactyl\Exceptions\Http\Server\FileSizeTooLargeException;
 use Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException;
 
 /**
- * @method \wolfXcore\Repositories\Wings\DaemonFileRepository setNode(\wolfXcore\Models\Node $node)
- * @method \wolfXcore\Repositories\Wings\DaemonFileRepository setServer(\wolfXcore\Models\Server $server)
+ * @method \Pterodactyl\Repositories\Wings\DaemonFileRepository setNode(\Pterodactyl\Models\Node $node)
+ * @method \Pterodactyl\Repositories\Wings\DaemonFileRepository setServer(\Pterodactyl\Models\Server $server)
  */
 class DaemonFileRepository extends DaemonRepository
 {

@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property string $long
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property \wolfXcore\Models\Node[] $nodes
- * @property \wolfXcore\Models\Server[] $servers
+ * @property \Pterodactyl\Models\Node[] $nodes
+ * @property \Pterodactyl\Models\Server[] $servers
  */
 class Location extends Model
 {
@@ -52,7 +52,7 @@ class Location extends Model
     /**
      * Gets the nodes in a specified location.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\wolfXcore\Models\Node, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Node, $this>
      */
     public function nodes(): HasMany
     {
@@ -62,7 +62,7 @@ class Location extends Model
     /**
      * Gets the servers within a given location.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough<\wolfXcore\Models\Server, \wolfXcore\Models\Node, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough<\Pterodactyl\Models\Server, \Pterodactyl\Models\Node, $this>
      */
     public function servers(): HasManyThrough
     {

@@ -21,7 +21,7 @@ class EggUpdateImporterService
     /**
      * Update an existing Egg using an uploaded JSON file.
      *
-     * @throws \wolfXcore\Exceptions\Service\InvalidFileUploadException|\Throwable
+     * @throws \Pterodactyl\Exceptions\Service\InvalidFileUploadException|\Throwable
      */
     public function handle(Egg $egg, UploadedFile $file): Egg
     {

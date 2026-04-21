@@ -46,7 +46,7 @@ class UserTransformer extends BaseTransformer
     /**
      * Return the servers associated with this user.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeServers(User $user): Collection|NullResource
     {

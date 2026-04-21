@@ -57,7 +57,7 @@ class ApiController extends Controller
     /**
      * Store the new key and redirect the user back to the application key listing.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function store(StoreApplicationApiKeyRequest $request): RedirectResponse
     {

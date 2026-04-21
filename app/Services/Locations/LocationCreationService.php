@@ -17,7 +17,7 @@ class LocationCreationService
     /**
      * Create a new location.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function handle(array $data): Location
     {

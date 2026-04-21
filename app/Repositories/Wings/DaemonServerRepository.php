@@ -9,8 +9,8 @@ use GuzzleHttp\Exception\TransferException;
 use Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException;
 
 /**
- * @method \wolfXcore\Repositories\Wings\DaemonServerRepository setNode(\wolfXcore\Models\Node $node)
- * @method \wolfXcore\Repositories\Wings\DaemonServerRepository setServer(\wolfXcore\Models\Server $server)
+ * @method \Pterodactyl\Repositories\Wings\DaemonServerRepository setNode(\Pterodactyl\Models\Node $node)
+ * @method \Pterodactyl\Repositories\Wings\DaemonServerRepository setServer(\Pterodactyl\Models\Server $server)
  */
 class DaemonServerRepository extends DaemonRepository
 {
@@ -132,7 +132,7 @@ class DaemonServerRepository extends DaemonRepository
      * correctly and avoids any costly mistakes in the codebase.
      *
      * @deprecated
-     * @see \wolfXcore\Repositories\Wings\DaemonRevocationRepository::deauthorize()
+     * @see \Pterodactyl\Repositories\Wings\DaemonRevocationRepository::deauthorize()
      *
      * @throws DaemonConnectionException
      */

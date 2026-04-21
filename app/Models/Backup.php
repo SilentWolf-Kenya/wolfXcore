@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \Carbon\CarbonImmutable $updated_at
  * @property \Carbon\CarbonImmutable|null $deleted_at
  * @property Server $server
- * @property \wolfXcore\Models\AuditLog[] $audits
+ * @property \Pterodactyl\Models\AuditLog[] $audits
  */
 #[Attributes\Identifiable('bkup')]
 class Backup extends Model implements Identifiable
@@ -77,7 +77,7 @@ class Backup extends Model implements Identifiable
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\Server, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Server, $this>
      */
     public function server(): BelongsTo
     {

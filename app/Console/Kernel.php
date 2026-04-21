@@ -55,7 +55,7 @@ class Kernel extends ConsoleKernel
     /**
      * I wonder what this does.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     private function registerTelemetry(Schedule $schedule): void

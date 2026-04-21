@@ -46,7 +46,7 @@ class TelemetryCollectionService
     /**
      * Collects telemetry data and returns it as an array.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function collect(): array
     {

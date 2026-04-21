@@ -45,7 +45,7 @@ class ScheduleTransformer extends BaseClientTransformer
     /**
      * Allows attaching the tasks specific to the schedule in the response.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeTasks(Schedule $model): Collection
     {

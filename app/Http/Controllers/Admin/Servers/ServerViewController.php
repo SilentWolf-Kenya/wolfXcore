@@ -66,7 +66,7 @@ class ServerViewController extends Controller
     /**
      * Returns the server startup management page.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function startup(Request $request, Server $server): View
     {

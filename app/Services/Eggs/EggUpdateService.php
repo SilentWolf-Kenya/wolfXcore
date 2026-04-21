@@ -18,8 +18,8 @@ class EggUpdateService
     /**
      * Update a service option.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      * @throws NoParentConfigurationFoundException
      */
     public function handle(Egg $egg, array $data): void

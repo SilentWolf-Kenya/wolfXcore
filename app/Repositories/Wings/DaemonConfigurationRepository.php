@@ -8,8 +8,8 @@ use GuzzleHttp\Exception\TransferException;
 use Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException;
 
 /**
- * @method \wolfXcore\Repositories\Wings\DaemonConfigurationRepository setNode(\wolfXcore\Models\Node $node)
- * @method \wolfXcore\Repositories\Wings\DaemonConfigurationRepository setServer(\wolfXcore\Models\Server $server)
+ * @method \Pterodactyl\Repositories\Wings\DaemonConfigurationRepository setNode(\Pterodactyl\Models\Node $node)
+ * @method \Pterodactyl\Repositories\Wings\DaemonConfigurationRepository setServer(\Pterodactyl\Models\Server $server)
  */
 class DaemonConfigurationRepository extends DaemonRepository
 {

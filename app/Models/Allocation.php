@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * wolfXcore\Models\Allocation.
+ * Pterodactyl\Models\Allocation.
  *
  * @property int $id
  * @property int $node_id
@@ -115,7 +115,7 @@ class Allocation extends Model
     /**
      * Gets information for the server associated with this allocation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\Server, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Server, $this>
      */
     public function server(): BelongsTo
     {
@@ -125,7 +125,7 @@ class Allocation extends Model
     /**
      * Return the Node model associated with this allocation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\Node, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Node, $this>
      */
     public function node(): BelongsTo
     {

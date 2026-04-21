@@ -56,11 +56,11 @@ class AllocationController extends ApplicationApiController
     /**
      * Store new allocations for a given node.
      *
-     * @throws \wolfXcore\Exceptions\DisplayException
-     * @throws \wolfXcore\Exceptions\Service\Allocation\CidrOutOfRangeException
-     * @throws \wolfXcore\Exceptions\Service\Allocation\InvalidPortMappingException
-     * @throws \wolfXcore\Exceptions\Service\Allocation\PortOutOfRangeException
-     * @throws \wolfXcore\Exceptions\Service\Allocation\TooManyPortsInRangeException
+     * @throws \Pterodactyl\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\CidrOutOfRangeException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\InvalidPortMappingException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\PortOutOfRangeException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\TooManyPortsInRangeException
      */
     public function store(StoreAllocationRequest $request, Node $node): JsonResponse
     {
@@ -72,7 +72,7 @@ class AllocationController extends ApplicationApiController
     /**
      * Delete a specific allocation from the Panel.
      *
-     * @throws \wolfXcore\Exceptions\Service\Allocation\ServerUsingAllocationException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\ServerUsingAllocationException
      */
     public function delete(DeleteAllocationRequest $request, Node $node, Allocation $allocation): JsonResponse
     {

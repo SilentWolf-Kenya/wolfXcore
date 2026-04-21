@@ -44,8 +44,8 @@ class MailController extends Controller
      * Handle request to update SMTP mail settings.
      *
      * @throws DisplayException
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function update(MailSettingsFormRequest $request): Response
     {

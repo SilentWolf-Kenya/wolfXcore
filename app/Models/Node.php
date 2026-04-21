@@ -38,9 +38,9 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property Location $location
- * @property \wolfXcore\Models\Mount[]|\Illuminate\Database\Eloquent\Collection $mounts
- * @property \wolfXcore\Models\Server[]|\Illuminate\Database\Eloquent\Collection $servers
- * @property \wolfXcore\Models\Allocation[]|\Illuminate\Database\Eloquent\Collection $allocations
+ * @property \Pterodactyl\Models\Mount[]|\Illuminate\Database\Eloquent\Collection $mounts
+ * @property \Pterodactyl\Models\Server[]|\Illuminate\Database\Eloquent\Collection $servers
+ * @property \Pterodactyl\Models\Allocation[]|\Illuminate\Database\Eloquent\Collection $allocations
  */
 #[Attributes\Identifiable('node')]
 class Node extends Model implements Identifiable
@@ -199,7 +199,7 @@ class Node extends Model implements Identifiable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough<\wolfXcore\Models\Mount, \wolfXcore\Models\MountNode, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough<\Pterodactyl\Models\Mount, \Pterodactyl\Models\MountNode, $this>
      */
     public function mounts(): HasManyThrough
     {
@@ -209,7 +209,7 @@ class Node extends Model implements Identifiable
     /**
      * Gets the location associated with a node.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\Location, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Location, $this>
      */
     public function location(): BelongsTo
     {
@@ -219,7 +219,7 @@ class Node extends Model implements Identifiable
     /**
      * Gets the servers associated with a node.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\wolfXcore\Models\Server, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Server, $this>
      */
     public function servers(): HasMany
     {
@@ -229,7 +229,7 @@ class Node extends Model implements Identifiable
     /**
      * Gets the allocations associated with a node.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\wolfXcore\Models\Allocation, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Allocation, $this>
      */
     public function allocations(): HasMany
     {

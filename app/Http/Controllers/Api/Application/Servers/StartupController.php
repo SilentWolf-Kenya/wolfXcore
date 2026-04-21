@@ -23,9 +23,9 @@ class StartupController extends ApplicationApiController
      * Update the startup and environment settings for a specific server.
      *
      * @throws \Illuminate\Validation\ValidationException
-     * @throws \wolfXcore\Exceptions\Http\Connection\DaemonConnectionException
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function index(UpdateServerStartupRequest $request, Server $server): array
     {

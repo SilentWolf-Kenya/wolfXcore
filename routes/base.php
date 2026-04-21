@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use wolfXcore\Http\Controllers\Base;
-use wolfXcore\Http\Controllers\BillingController;
-use wolfXcore\Http\Controllers\BotController;
-use wolfXcore\Http\Middleware\RequireTwoFactorAuthentication;
+use Pterodactyl\Http\Controllers\Base;
+use Pterodactyl\Http\Controllers\BillingController;
+use Pterodactyl\Http\Controllers\BotController;
+use Pterodactyl\Http\Middleware\RequireTwoFactorAuthentication;
 
 Route::get('/dashboard', [Base\IndexController::class, 'index'])->name('index');
 Route::get('/account', [Base\IndexController::class, 'index'])

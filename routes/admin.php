@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use wolfXcore\Http\Controllers\Admin;
-use wolfXcore\Http\Middleware\Admin\Servers\ServerInstalled;
+use Pterodactyl\Http\Controllers\Admin;
+use Pterodactyl\Http\Middleware\Admin\Servers\ServerInstalled;
 
 Route::get('/', [Admin\BaseController::class, 'index'])->name('admin.index');
 

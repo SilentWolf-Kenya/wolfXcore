@@ -30,7 +30,7 @@ class CreateServerController extends Controller
     /**
      * Displays the create server page.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function index(): View|RedirectResponse
     {
@@ -62,9 +62,9 @@ class CreateServerController extends Controller
      * Create a new server on the remote system.
      *
      * @throws \Illuminate\Validation\ValidationException
-     * @throws \wolfXcore\Exceptions\DisplayException
-     * @throws \wolfXcore\Exceptions\Service\Deployment\NoViableAllocationException
-     * @throws \wolfXcore\Exceptions\Service\Deployment\NoViableNodeException
+     * @throws \Pterodactyl\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\Service\Deployment\NoViableAllocationException
+     * @throws \Pterodactyl\Exceptions\Service\Deployment\NoViableNodeException
      * @throws \Throwable
      */
     public function store(ServerFormRequest $request): RedirectResponse

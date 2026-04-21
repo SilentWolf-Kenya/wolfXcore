@@ -472,7 +472,7 @@ body, .content-wrapper, .main-header, .main-sidebar, .sidebar-menu,
         ]);
 
         $enabled = $request->has('repo_clone_enabled') ? '1' : '0';
-        $rawList = trim($request->input('repo_clone_allowlist', \wolfXcore\Services\Files\RepoCloneService::DEFAULT_ALLOWLIST));
+        $rawList = trim($request->input('repo_clone_allowlist', \Pterodactyl\Services\Files\RepoCloneService::DEFAULT_ALLOWLIST));
 
         // Sanitize: lowercase hostnames, strip schemes, strip paths
         $hosts = array_filter(array_map(function ($h) {
@@ -484,12 +484,12 @@ body, .content-wrapper, .main-header, .main-sidebar, .sidebar-menu,
         // Refuse to silently lock everyone out — fall back to the default hosts
         // when the admin clears the field.
         if (empty($hosts)) {
-            $hosts = explode(',', \wolfXcore\Services\Files\RepoCloneService::DEFAULT_ALLOWLIST);
+            $hosts = explode(',', \Pterodactyl\Services\Files\RepoCloneService::DEFAULT_ALLOWLIST);
         }
         $clean = implode(', ', array_unique($hosts));
 
-        Setting::updateOrCreate(['key' => \wolfXcore\Services\Files\RepoCloneService::SETTING_ENABLED], ['value' => $enabled]);
-        Setting::updateOrCreate(['key' => \wolfXcore\Services\Files\RepoCloneService::SETTING_ALLOWLIST], ['value' => $clean]);
+        Setting::updateOrCreate(['key' => \Pterodactyl\Services\Files\RepoCloneService::SETTING_ENABLED], ['value' => $enabled]);
+        Setting::updateOrCreate(['key' => \Pterodactyl\Services\Files\RepoCloneService::SETTING_ALLOWLIST], ['value' => $clean]);
 
         $this->alert->success('Repository clone settings saved.')->flash();
         return redirect()->route('admin.super.index');
@@ -498,8 +498,8 @@ body, .content-wrapper, .main-header, .main-sidebar, .sidebar-menu,
     public static function getRepoCloneConfig(): array
     {
         return [
-            'enabled'   => \wolfXcore\Services\Files\RepoCloneService::isEnabled(),
-            'allowlist' => \wolfXcore\Services\Files\RepoCloneService::getAllowlist(),
+            'enabled'   => \Pterodactyl\Services\Files\RepoCloneService::isEnabled(),
+            'allowlist' => \Pterodactyl\Services\Files\RepoCloneService::getAllowlist(),
         ];
     }
 
@@ -540,10 +540,10 @@ body, .content-wrapper, .main-header, .main-sidebar, .sidebar-menu,
         // Live RSS for top-15 servers AND paused bots — bounded N, polled with per-call
         // exception handling so a flaky Wings daemon shows "—" instead of hanging the page.
         $liveRss = [];
-        $repo = app(\wolfXcore\Repositories\Wings\DaemonServerRepository::class);
+        $repo = app(\Pterodactyl\Repositories\Wings\DaemonServerRepository::class);
         $rssTargets = $servers->pluck('id')->merge($paused->pluck('server_id'))->unique();
         foreach ($rssTargets as $sid) {
-            $srv = \wolfXcore\Models\Server::find($sid);
+            $srv = \Pterodactyl\Models\Server::find($sid);
             if (!$srv) continue;
             try {
                 $details = $repo->setServer($srv)->getDetails();

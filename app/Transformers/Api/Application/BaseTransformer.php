@@ -85,13 +85,13 @@ abstract class BaseTransformer extends TransformerAbstract
      * Create a new instance of the transformer and pass along the currently
      * set API key.
      *
-     * @template T of \wolfXcore\Transformers\Api\Application\BaseTransformer
+     * @template T of \Pterodactyl\Transformers\Api\Application\BaseTransformer
      *
      * @param class-string<T> $abstract
      *
      * @return T
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      *
      * @noinspection PhpDocSignatureInspection
      */

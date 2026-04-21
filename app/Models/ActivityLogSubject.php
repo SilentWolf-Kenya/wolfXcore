@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * \wolfXcore\Models\ActivityLogSubject.
+ * \Pterodactyl\Models\ActivityLogSubject.
  *
  * @property int $id
  * @property int $activity_log_id
@@ -32,7 +32,7 @@ class ActivityLogSubject extends Pivot
     protected $guarded = ['id'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\ActivityLog, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\ActivityLog, $this>
      */
     public function activityLog(): BelongsTo
     {

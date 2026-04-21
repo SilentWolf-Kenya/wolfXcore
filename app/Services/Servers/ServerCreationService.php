@@ -43,11 +43,11 @@ class ServerCreationService
      * no node_id the node_is will be picked from the allocation.
      *
      * @throws \Throwable
-     * @throws \wolfXcore\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\DisplayException
      * @throws \Illuminate\Validation\ValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
-     * @throws \wolfXcore\Exceptions\Service\Deployment\NoViableNodeException
-     * @throws \wolfXcore\Exceptions\Service\Deployment\NoViableAllocationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Service\Deployment\NoViableNodeException
+     * @throws \Pterodactyl\Exceptions\Service\Deployment\NoViableAllocationException
      */
     public function handle(array $data, ?DeploymentObject $deployment = null): Server
     {
@@ -109,9 +109,9 @@ class ServerCreationService
     /**
      * Gets an allocation to use for automatic deployment.
      *
-     * @throws \wolfXcore\Exceptions\DisplayException
-     * @throws \wolfXcore\Exceptions\Service\Deployment\NoViableAllocationException
-     * @throws \wolfXcore\Exceptions\Service\Deployment\NoViableNodeException
+     * @throws \Pterodactyl\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\Service\Deployment\NoViableAllocationException
+     * @throws \Pterodactyl\Exceptions\Service\Deployment\NoViableNodeException
      */
     private function configureDeployment(array $data, DeploymentObject $deployment): Allocation
     {
@@ -130,7 +130,7 @@ class ServerCreationService
     /**
      * Store the server in the database and return the model.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     private function createModel(array $data): Server
     {

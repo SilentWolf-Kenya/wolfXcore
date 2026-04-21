@@ -26,7 +26,7 @@ class EggShareController extends Controller
     }
 
     /**
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function export(Egg $egg): Response
     {
@@ -43,10 +43,10 @@ class EggShareController extends Controller
     /**
      * Import a new service option using an XML file.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
-     * @throws \wolfXcore\Exceptions\Service\Egg\BadJsonFormatException
-     * @throws \wolfXcore\Exceptions\Service\InvalidFileUploadException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Service\Egg\BadJsonFormatException
+     * @throws \Pterodactyl\Exceptions\Service\InvalidFileUploadException
      */
     public function import(EggImportFormRequest $request): RedirectResponse
     {
@@ -59,10 +59,10 @@ class EggShareController extends Controller
     /**
      * Update an existing Egg using a new imported file.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
-     * @throws \wolfXcore\Exceptions\Service\Egg\BadJsonFormatException
-     * @throws \wolfXcore\Exceptions\Service\InvalidFileUploadException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Service\Egg\BadJsonFormatException
+     * @throws \Pterodactyl\Exceptions\Service\InvalidFileUploadException
      */
     public function update(EggImportFormRequest $request, Egg $egg): RedirectResponse
     {

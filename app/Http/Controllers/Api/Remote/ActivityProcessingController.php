@@ -25,7 +25,7 @@ class ActivityProcessingController extends Controller
     {
         $tz = Carbon::now()->getTimezone();
 
-        /** @var \wolfXcore\Models\Node $node */
+        /** @var \Pterodactyl\Models\Node $node */
         $node = $request->attributes->get('node');
 
         $servers = $node->servers()->whereIn('uuid', $request->servers())->get()->keyBy('uuid');

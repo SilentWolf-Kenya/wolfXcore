@@ -68,11 +68,11 @@ class ResetPasswordController extends Controller
      * account do not automatically log them in. In those cases, send the user back to the login
      * form with a note telling them their password was changed and to log back in.
      *
-     * @param \Illuminate\Contracts\Auth\CanResetPassword&\wolfXcore\Models\User $user
+     * @param \Illuminate\Contracts\Auth\CanResetPassword&\Pterodactyl\Models\User $user
      * @param string $password
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     protected function resetPassword($user, $password)
     {

@@ -34,7 +34,7 @@ class VariableValidatorService
             $query = $query->where('user_editable', true)->where('user_viewable', true);
         }
 
-        /** @var \wolfXcore\Models\EggVariable[] $variables */
+        /** @var \Pterodactyl\Models\EggVariable[] $variables */
         $variables = $query->get();
 
         $data = $rules = $customAttributes = [];

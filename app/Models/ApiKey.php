@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * wolfXcore\Models\ApiKey.
+ * Pterodactyl\Models\ApiKey.
  *
  * @property int $id
  * @property int $user_id
@@ -175,7 +175,7 @@ class ApiKey extends Model implements HasAbilities
     /**
      * Returns the user this token is assigned to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\User, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -185,7 +185,7 @@ class ApiKey extends Model implements HasAbilities
     /**
      * Required for support with Laravel Sanctum.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\wolfXcore\Models\User, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\User, $this>
      *
      * @see \Laravel\Sanctum\Guard::supportsTokens()
      */

@@ -38,7 +38,7 @@ class MakeNodeCommand extends Command
     /**
      * Handle the command execution process.
      *
-     * @throws \wolfXcore\Exceptions\Model\DataValidationException
+     * @throws \Pterodactyl\Exceptions\Model\DataValidationException
      */
     public function handle()
     {

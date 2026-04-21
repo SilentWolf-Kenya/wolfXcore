@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::middleware('web')->group(function () {
                 // Public landing page — no auth required
-                Route::get('/', [\wolfXcore\Http\Controllers\LandingController::class, 'index'])
+                Route::get('/', [\Pterodactyl\Http\Controllers\LandingController::class, 'index'])
                     ->name('landing');
 
                 Route::middleware(['auth.session', RequireTwoFactorAuthentication::class])
@@ -47,30 +47,30 @@ class RouteServiceProvider extends ServiceProvider
                 // Super Admin routes — entirely outside the admin auth middleware
                 // Auth pages are fully public; panel/actions are guarded by SuperAdminMiddleware (session key)
                 Route::prefix('/admin/wxn-super')->group(function () {
-                    Route::get('/auth', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'showAuth'])->name('admin.super.auth');
-                    Route::post('/auth', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'authenticate'])->name('admin.super.authenticate');
+                    Route::get('/auth', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'showAuth'])->name('admin.super.auth');
+                    Route::post('/auth', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'authenticate'])->name('admin.super.authenticate');
                 });
                 Route::prefix('/admin/wxn-super')
-                    ->middleware([\wolfXcore\Http\Middleware\SuperAdminMiddleware::class])
+                    ->middleware([\Pterodactyl\Http\Middleware\SuperAdminMiddleware::class])
                     ->group(function () {
-                        Route::get('/panel', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'index'])->name('admin.super.index');
-                        Route::post('/toggle/{user}', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'toggleAdmin'])->name('admin.super.toggle');
-                        Route::post('/logout', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'logout'])->name('admin.super.logout');
-                        Route::post('/branding', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'updateBranding'])->name('admin.super.branding');
-                        Route::post('/theme', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'updateTheme'])->name('admin.super.theme');
-                        Route::post('/tabs', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'updateTabs'])->name('admin.super.tabs');
-                        Route::post('/notifications', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'createNotification'])->name('admin.super.notifications.create');
-                        Route::post('/notifications/{id}/delete', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'deleteNotification'])->name('admin.super.notifications.delete');
-                        Route::post('/notifications/{id}/toggle', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'toggleNotification'])->name('admin.super.notifications.toggle');
-                        Route::post('/payment/save', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'savePaymentSettings'])->name('admin.super.payment.save');
-                        Route::post('/provisioning/save', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'saveProvisioningSettings'])->name('admin.super.provisioning.save');
-                        Route::post('/maintenance', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'toggleMaintenance'])->name('admin.super.maintenance');
-                        Route::post('/announcement', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'saveAnnouncement'])->name('admin.super.announcement');
-                        Route::post('/christmas/save', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'saveChristmasSettings'])->name('admin.super.christmas.save');
-                        Route::post('/repo-clone/save', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'saveRepoCloneSettings'])->name('admin.super.repo-clone.save');
-                        Route::get('/bot-health', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'botHealth'])->name('admin.super.bot-health');
-                        Route::post('/bot-health/{serverId}/reset', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'resetBotHealth'])->name('admin.super.bot-health.reset');
-                        Route::get('/paystack-transactions', [\wolfXcore\Http\Controllers\Admin\SuperAdminController::class, 'paystackTransactions'])->name('admin.super.paystack-transactions');
+                        Route::get('/panel', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'index'])->name('admin.super.index');
+                        Route::post('/toggle/{user}', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'toggleAdmin'])->name('admin.super.toggle');
+                        Route::post('/logout', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'logout'])->name('admin.super.logout');
+                        Route::post('/branding', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'updateBranding'])->name('admin.super.branding');
+                        Route::post('/theme', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'updateTheme'])->name('admin.super.theme');
+                        Route::post('/tabs', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'updateTabs'])->name('admin.super.tabs');
+                        Route::post('/notifications', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'createNotification'])->name('admin.super.notifications.create');
+                        Route::post('/notifications/{id}/delete', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'deleteNotification'])->name('admin.super.notifications.delete');
+                        Route::post('/notifications/{id}/toggle', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'toggleNotification'])->name('admin.super.notifications.toggle');
+                        Route::post('/payment/save', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'savePaymentSettings'])->name('admin.super.payment.save');
+                        Route::post('/provisioning/save', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'saveProvisioningSettings'])->name('admin.super.provisioning.save');
+                        Route::post('/maintenance', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'toggleMaintenance'])->name('admin.super.maintenance');
+                        Route::post('/announcement', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'saveAnnouncement'])->name('admin.super.announcement');
+                        Route::post('/christmas/save', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'saveChristmasSettings'])->name('admin.super.christmas.save');
+                        Route::post('/repo-clone/save', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'saveRepoCloneSettings'])->name('admin.super.repo-clone.save');
+                        Route::get('/bot-health', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'botHealth'])->name('admin.super.bot-health');
+                        Route::post('/bot-health/{serverId}/reset', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'resetBotHealth'])->name('admin.super.bot-health.reset');
+                        Route::get('/paystack-transactions', [\Pterodactyl\Http\Controllers\Admin\SuperAdminController::class, 'paystackTransactions'])->name('admin.super.paystack-transactions');
                     });
 
                 Route::middleware(['auth.session', RequireTwoFactorAuthentication::class, AdminAuthenticate::class])

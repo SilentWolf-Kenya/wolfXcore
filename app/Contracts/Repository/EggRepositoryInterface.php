@@ -10,7 +10,7 @@ interface EggRepositoryInterface extends RepositoryInterface
     /**
      * Return an egg with the variables relation attached.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function getWithVariables(int $id): Egg;
 
@@ -27,7 +27,7 @@ interface EggRepositoryInterface extends RepositoryInterface
     /**
      * Return all the data needed to export a service.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function getWithExportAttributes(int $id): Egg;
 

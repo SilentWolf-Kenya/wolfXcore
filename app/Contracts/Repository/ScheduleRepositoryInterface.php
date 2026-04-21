@@ -15,7 +15,7 @@ interface ScheduleRepositoryInterface extends RepositoryInterface
     /**
      * Return a schedule model with all the associated tasks as a relationship.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function getScheduleWithTasks(int $schedule): Schedule;
 }

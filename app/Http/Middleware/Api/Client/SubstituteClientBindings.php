@@ -25,7 +25,7 @@ class SubstituteClientBindings extends SubstituteBindings
         });
 
         $this->router->bind('user', function ($value, $route) {
-            /** @var \wolfXcore\Models\Subuser $match */
+            /** @var \Pterodactyl\Models\Subuser $match */
             $match = $route->parameter('server')
                 ->subusers()
                 ->whereRelation('user', 'uuid', '=', $value)

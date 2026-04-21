@@ -19,7 +19,7 @@ class MaintenanceMiddleware
      */
     public function handle(Request $request, \Closure $next): mixed
     {
-        /** @var \wolfXcore\Models\Server $server */
+        /** @var \Pterodactyl\Models\Server $server */
         $server = $request->attributes->get('server');
         $node = $server->getRelation('node');
 

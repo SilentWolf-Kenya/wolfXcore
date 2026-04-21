@@ -15,7 +15,7 @@ use Pterodactyl\Models\Traits\HasRealtimeIdentifier;
 use Illuminate\Database\Eloquent\Model as IlluminateModel;
 
 /**
- * \wolfXcore\Models\ActivityLog.
+ * \Pterodactyl\Models\ActivityLog.
  *
  * @property int $id
  * @property string|null $batch
@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Model as IlluminateModel;
  * @property \Illuminate\Support\Collection|null $properties
  * @property Carbon $timestamp
  * @property IlluminateModel|\Eloquent $actor
- * @property \Illuminate\Database\Eloquent\Collection<int, \wolfXcore\Models\ActivityLogSubject> $subjects
+ * @property \Illuminate\Database\Eloquent\Collection<int, \Pterodactyl\Models\ActivityLogSubject> $subjects
  * @property int|null $subjects_count
  * @property ApiKey|null $apiKey
  *
@@ -100,7 +100,7 @@ class ActivityLog extends Model implements Identifiable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\wolfXcore\Models\ActivityLogSubject, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\ActivityLogSubject, $this>
      */
     public function subjects(): HasMany
     {
@@ -108,7 +108,7 @@ class ActivityLog extends Model implements Identifiable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\wolfXcore\Models\ApiKey, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\Pterodactyl\Models\ApiKey, $this>
      */
     public function apiKey(): HasOne
     {

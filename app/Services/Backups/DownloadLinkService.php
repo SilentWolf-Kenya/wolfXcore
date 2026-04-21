@@ -45,7 +45,7 @@ class DownloadLinkService
      */
     protected function getS3BackupUrl(Backup $backup): string
     {
-        /** @var \wolfXcore\Extensions\Filesystem\S3Filesystem $adapter */
+        /** @var \Pterodactyl\Extensions\Filesystem\S3Filesystem $adapter */
         $adapter = $this->backupManager->adapter(Backup::ADAPTER_AWS_S3);
 
         $request = $adapter->getClient()->createPresignedRequest(

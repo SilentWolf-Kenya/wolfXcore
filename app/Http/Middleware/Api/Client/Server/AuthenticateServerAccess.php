@@ -28,7 +28,7 @@ class AuthenticateServerAccess
      */
     public function handle(Request $request, \Closure $next): mixed
     {
-        /** @var \wolfXcore\Models\User $user */
+        /** @var \Pterodactyl\Models\User $user */
         $user = $request->user();
         $server = $request->route()->parameter('server');
 

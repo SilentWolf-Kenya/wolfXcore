@@ -43,8 +43,8 @@ class DatabaseController extends ClientApiController
      * Create a new database for the given server and return it.
      *
      * @throws \Throwable
-     * @throws \wolfXcore\Exceptions\Service\Database\TooManyDatabasesException
-     * @throws \wolfXcore\Exceptions\Service\Database\DatabaseClientFeatureNotEnabledException
+     * @throws \Pterodactyl\Exceptions\Service\Database\TooManyDatabasesException
+     * @throws \Pterodactyl\Exceptions\Service\Database\DatabaseClientFeatureNotEnabledException
      */
     public function store(StoreDatabaseRequest $request, Server $server): array
     {
@@ -90,7 +90,7 @@ class DatabaseController extends ClientApiController
     /**
      * Removes a database from the server.
      *
-     * @throws \wolfXcore\Exceptions\Repository\RecordNotFoundException
+     * @throws \Pterodactyl\Exceptions\Repository\RecordNotFoundException
      */
     public function delete(DeleteDatabaseRequest $request, Server $server, Database $database): Response
     {

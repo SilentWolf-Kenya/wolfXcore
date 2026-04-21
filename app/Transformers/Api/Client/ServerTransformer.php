@@ -114,7 +114,7 @@ class ServerTransformer extends BaseClientTransformer
     /**
      * Returns the allocations associated with this server.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeAllocations(Server $server): Collection
     {
@@ -139,7 +139,7 @@ class ServerTransformer extends BaseClientTransformer
     }
 
     /**
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeVariables(Server $server): Collection|NullResource
     {
@@ -157,7 +157,7 @@ class ServerTransformer extends BaseClientTransformer
     /**
      * Returns the egg associated with this server.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeEgg(Server $server): Item
     {
@@ -167,7 +167,7 @@ class ServerTransformer extends BaseClientTransformer
     /**
      * Returns the subusers associated with this server.
      *
-     * @throws \wolfXcore\Exceptions\Transformer\InvalidTransformerLevelException
+     * @throws \Pterodactyl\Exceptions\Transformer\InvalidTransformerLevelException
      */
     public function includeSubusers(Server $server): Collection|NullResource
     {
