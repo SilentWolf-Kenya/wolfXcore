@@ -185,6 +185,7 @@
         @endphp
         <style id="wxn-theme-vars">{!! $wxnThemeCss !!}</style>
         @if(!empty($wxnCustomCss))<style id="wxn-custom-css">{{ $wxnCustomCss }}</style>@endif
+        <style id="wxn-no-hover">.table-hover>tbody>tr:hover,.table>tbody>tr:hover{background-color:transparent!important;background:transparent!important;}.table>tbody>tr:hover>td,.table>tbody>tr:hover>th{background-color:transparent!important;background:transparent!important;}</style>
     </head>
     <body class="hold-transition skin-blue fixed sidebar-mini">
         <div class="wxn-bg-grid" @if(($wxnThemeRaw['grid_enable'] ?? '1') === '0') data-disabled="1" @endif></div>
