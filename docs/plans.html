@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plans — wolfXcore Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<header id="site-header"></header>
+
+<div class="layout">
+  <nav class="sidebar" id="site-sidebar"></nav>
+
+  <main class="main">
+    <div class="page-eyebrow">FEATURES</div>
+    <h1 class="page-title">PLANS</h1>
+    <p class="page-desc">
+      wolfXcore offers two subscription tiers. Users purchase a plan via M-Pesa and gain
+      access to the corresponding server allocation limits.
+    </p>
+
+    <h2>Plan comparison</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>LIMITED <span class="badge badge-yellow">KES 50</span></th>
+            <th>UNLIMITED <span class="badge badge-green">KES 100</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Monthly price</td><td>KES 50</td><td>KES 100</td></tr>
+          <tr><td>Server slots</td><td>Limited quota</td><td>No hard limit</td></tr>
+          <tr><td>Resource caps</td><td>Enforced per server</td><td>Configurable by admin</td></tr>
+          <tr><td>File manager</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Console access</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Scheduled tasks</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Database management</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Priority support</td><td>—</td><td>✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>How plans are stored</h2>
+    <p>
+      Plan assignments are stored on the user record in the database. The billing webhook
+      updates the user's plan field after a successful M-Pesa payment is confirmed by Paystack.
+    </p>
+
+    <div class="pre-label">Database column (users table)</div>
+    <pre><code>plan   <span class="cm">-- enum: 'none', 'limited', 'unlimited'</span>
+plan_expires_at   <span class="cm">-- timestamp: when the current plan expires</span></code></pre>
+
+    <h2>Plan enforcement</h2>
+    <p>
+      When a user attempts to create a server, the panel checks their current plan and
+      whether it has expired. Actions are blocked at the controller level if the plan does not
+      permit the requested action.
+    </p>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body">
+        <strong>Expired plans.</strong>
+        When a plan expires, the user is downgraded to <code>none</code> and cannot create new
+        servers or use plan-gated features. Existing servers remain accessible but may have
+        reduced functionality until renewal.
+      </div>
+    </div>
+
+    <h2>Purchasing a plan</h2>
+    <ol class="steps">
+      <li>Log into the panel and navigate to <strong>Billing</strong> (<code>/billing</code>).</li>
+      <li>Select either the <strong>LIMITED</strong> or <strong>UNLIMITED</strong> plan.</li>
+      <li>Enter your Safaricom M-Pesa phone number in <code>07XXXXXXXXX</code> format.</li>
+      <li>Click <strong>Pay Now</strong> — an STK push is sent to your phone.</li>
+      <li>Approve the payment prompt on your phone using your M-Pesa PIN.</li>
+      <li>The overlay will update to <strong>Success</strong> and your plan activates immediately.</li>
+    </ol>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Do not close the browser during payment.</strong>
+        The STK push overlay polls for confirmation. If you navigate away before the webhook
+        is received, the plan may not activate automatically. Check billing status if this
+        happens and contact support.
+      </div>
+    </div>
+
+    <h2>Admin — manual plan assignment</h2>
+    <p>Admins can manually assign or adjust a user's plan from the admin user editor, or
+    directly in the database:</p>
+    <div class="pre-label">SQL</div>
+    <pre><code>UPDATE users
+SET plan = <span class="st">'unlimited'</span>,
+    plan_expires_at = DATE_ADD(NOW(), INTERVAL 30 DAY)
+WHERE email = <span class="st">'user@example.com'</span>;</code></pre>
+
+    <h2>Changing plan prices</h2>
+    <p>
+      Plan prices are defined in the billing controller
+      (<code>app/Http/Controllers/BillingController.php</code>). To change a price:
+    </p>
+    <ol class="steps">
+      <li>Open <code>app/Http/Controllers/BillingController.php</code>.</li>
+      <li>Locate the <code>$plans</code> array and update the <code>amount</code> values (in KES).</li>
+      <li>Update the corresponding text in the billing view if needed.</li>
+      <li>Deploy the change and rebuild the frontend.</li>
+    </ol>
+
+    <div class="doc-nav">
+      <a href="super-admin.html">&larr; Super Admin Panel</a>
+      <a href="maintenance.html" class="next">Maintenance Mode &rarr;</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <span>wolfXcore Documentation</span>
+  <span>panel.xwolf.space</span>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>

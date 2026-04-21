@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Billing &amp; M-Pesa — wolfXcore Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<header id="site-header"></header>
+
+<div class="layout">
+  <nav class="sidebar" id="site-sidebar"></nav>
+
+  <main class="main">
+    <div class="page-eyebrow">FEATURES</div>
+    <h1 class="page-title">BILLING &amp; M-PESA</h1>
+    <p class="page-desc">
+      wolfXcore uses <strong>Paystack</strong> to process M-Pesa STK push payments in
+      Kenyan Shillings (KES). Users pay directly from their mobile wallet — no card needed.
+    </p>
+
+    <h2>How it works</h2>
+    <p>
+      When a user selects a plan and enters their Safaricom number, the panel triggers a
+      Paystack <strong>Charge API</strong> call with the <code>mpesa</code> channel. Paystack
+      delivers an STK push prompt to the user's phone. Once the user approves on their phone,
+      Paystack sends a webhook to the panel confirming payment, and the plan is activated.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Plan</th><th>Price</th><th>Badge</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LIMITED</td>
+            <td>KES 50 / month</td>
+            <td><span class="badge badge-yellow">LIMITED</span></td>
+          </tr>
+          <tr>
+            <td>UNLIMITED</td>
+            <td>KES 100 / month</td>
+            <td><span class="badge badge-green">UNLIMITED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Paystack API keys</h2>
+    <p>
+      Keys are stored in the <strong>database settings table</strong>, not in <code>.env</code>.
+      This allows live key rotation from the Super Admin panel without redeployment.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Setting key</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>paystack::secret_key</code></td><td>Server-side secret key (starts with <code>sk_live_</code>)</td></tr>
+          <tr><td><code>paystack::public_key</code></td><td>Client-side public key (starts with <code>pk_live_</code>)</td></tr>
+          <tr><td><code>paystack::currency</code></td><td>Should be set to <code>KES</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Live keys only.</strong>
+        M-Pesa STK push is only available on Paystack <em>live</em> mode. Test mode will not
+        trigger a real STK prompt. Switch to live keys in the Super Admin panel before going
+        to production.
+      </div>
+    </div>
+
+    <h2>Setting keys via the Super Admin panel</h2>
+    <ol class="steps">
+      <li>Navigate to <code>/admin/wxn-super/auth</code> and authenticate.</li>
+      <li>Go to <strong>Payment Settings</strong>.</li>
+      <li>Enter your Paystack live secret key and public key.</li>
+      <li>Set currency to <code>KES</code>.</li>
+      <li>Save — keys are stored immediately in the DB settings table.</li>
+    </ol>
+
+    <h2>Setting keys via SQL (manual)</h2>
+    <div class="pre-label">SQL</div>
+    <pre><code>INSERT INTO settings (<span class="nm">key</span>, <span class="nm">value</span>) VALUES
+  (<span class="st">'paystack::secret_key'</span>, <span class="st">'sk_live_YOUR_KEY'</span>),
+  (<span class="st">'paystack::public_key'</span>,  <span class="st">'pk_live_YOUR_KEY'</span>),
+  (<span class="st">'paystack::currency'</span>,    <span class="st">'KES'</span>)
+ON DUPLICATE KEY UPDATE <span class="nm">value</span> = VALUES(<span class="nm">value</span>);</code></pre>
+
+    <h2>Phone number normalisation</h2>
+    <p>
+      The billing controller normalises all phone inputs to the international
+      <code>+254XXXXXXXXX</code> format before sending to Paystack. Accepted input formats:
+    </p>
+    <ul>
+      <li><code>07XXXXXXXX</code> → <code>+2547XXXXXXXX</code></li>
+      <li><code>01XXXXXXXX</code> → <code>+2541XXXXXXXX</code></li>
+      <li><code>2547XXXXXXXX</code> → <code>+2547XXXXXXXX</code></li>
+      <li><code>+2547XXXXXXXX</code> → passed through unchanged</li>
+    </ul>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body">
+        <strong>Safaricom numbers only.</strong>
+        Paystack M-Pesa in Kenya supports Safaricom lines (07xx / 01xx prefixes).
+        Airtel and other operators are not supported through this channel.
+      </div>
+    </div>
+
+    <h2>STK push overlay states</h2>
+    <p>The billing UI (<code>resources/views/billing/index.blade.php</code>) shows an animated
+    overlay while payment is being processed:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>State</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-blue">Pending</span></td><td>STK push sent, waiting for user to approve on phone</td></tr>
+          <tr><td><span class="badge badge-green">Success</span></td><td>Payment confirmed by Paystack webhook</td></tr>
+          <tr><td><span class="badge badge-red">Failure</span></td><td>User cancelled or wrong PIN entered</td></tr>
+          <tr><td><span class="badge badge-yellow">Timeout</span></td><td>User did not respond within 60 seconds</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Paystack webhook</h2>
+    <p>
+      Configure the webhook URL in your Paystack dashboard to point to:
+    </p>
+    <div class="pre-label">Paystack webhook URL</div>
+    <pre><code>https://panel.xwolf.space/billing/webhook</code></pre>
+
+    <p>The webhook handler verifies the <code>X-Paystack-Signature</code> header using your
+    secret key before processing any event.</p>
+
+    <h2>Relevant source files</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>File</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>app/Http/Controllers/BillingController.php</code></td><td>Payment initiation &amp; webhook handler</td></tr>
+          <tr><td><code>app/Services/PaystackService.php</code></td><td>Paystack API wrapper (charge, verify)</td></tr>
+          <tr><td><code>resources/views/billing/index.blade.php</code></td><td>Billing UI with STK overlay</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-nav">
+      <a href="wings.html">&larr; Wings Setup</a>
+      <a href="super-admin.html" class="next">Super Admin Panel &rarr;</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <span>wolfXcore Documentation</span>
+  <span>panel.xwolf.space</span>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>

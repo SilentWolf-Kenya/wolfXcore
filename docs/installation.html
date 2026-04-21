@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation — wolfXcore Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<header id="site-header"></header>
+
+<div class="layout">
+  <nav class="sidebar" id="site-sidebar"></nav>
+
+  <main class="main">
+    <div class="page-eyebrow">GETTING STARTED</div>
+    <h1 class="page-title">INSTALLATION</h1>
+    <p class="page-desc">
+      Step-by-step guide to installing wolfXcore on a fresh Debian / Ubuntu VPS.
+      Estimated time: <strong>20–30 minutes</strong>.
+    </p>
+
+    <h2>Requirements</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Requirement</th><th>Minimum</th><th>Recommended</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>OS</td><td>Ubuntu 22.04 LTS</td><td>Debian 12 / 13</td></tr>
+          <tr><td>CPU</td><td>1 vCPU</td><td>2+ vCPUs</td></tr>
+          <tr><td>RAM</td><td>1 GB</td><td>2 GB+</td></tr>
+          <tr><td>Disk</td><td>10 GB</td><td>20 GB+</td></tr>
+          <tr><td>PHP</td><td>8.2</td><td>8.4 (production)</td></tr>
+          <tr><td>Node.js</td><td>18</td><td>20</td></tr>
+          <tr><td>Database</td><td>MySQL 8 / MariaDB 10.6</td><td>MariaDB 11</td></tr>
+          <tr><td>Cache</td><td>Redis 6</td><td>Redis 7</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Root or sudo access required.</strong>
+        All commands below assume you are running as <code>root</code> or prefixing with <code>sudo</code>.
+      </div>
+    </div>
+
+    <h2>1 — System packages</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>apt update && apt upgrade -y
+apt install -y curl wget git unzip software-properties-common \
+  nginx redis-server mariadb-server supervisor</code></pre>
+
+    <h2>2 — PHP 8.4</h2>
+    <p>Install PHP and all extensions required by Laravel and the panel.</p>
+    <div class="pre-label">bash</div>
+    <pre><code><span class="cm"># Add Ondřej Surý PPA (or use native packages on Debian 13)</span>
+curl -sSL https://packages.sury.org/php/apt.gpg \
+  | gpg --dearmor > /usr/share/keyrings/php-sury.gpg
+echo "deb [signed-by=/usr/share/keyrings/php-sury.gpg] \
+  https://packages.sury.org/php/ $(lsb_release -sc) main" \
+  > /etc/apt/sources.list.d/php.list
+apt update
+apt install -y php8.4 php8.4-fpm php8.4-cli php8.4-mbstring \
+  php8.4-xml php8.4-curl php8.4-zip php8.4-bcmath php8.4-mysql \
+  php8.4-redis php8.4-gd php8.4-intl</code></pre>
+
+    <h2>3 — Node.js 20 &amp; Yarn</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt install -y nodejs
+npm install -g yarn</code></pre>
+
+    <h2>4 — Composer</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>curl -sS https://getcomposer.org/installer | php -- \
+  --install-dir=/usr/local/bin --filename=composer</code></pre>
+
+    <h2>5 — Database setup</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>mysql_secure_installation
+
+mysql -u root -p &lt;&lt;'SQL'
+CREATE DATABASE wolfxcore;
+CREATE USER 'wolfxcore'@'127.0.0.1' IDENTIFIED BY 'your_strong_password';
+GRANT ALL PRIVILEGES ON wolfxcore.* TO 'wolfxcore'@'127.0.0.1';
+FLUSH PRIVILEGES;
+SQL</code></pre>
+
+    <h2>6 — Clone the repository</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>mkdir -p /var/www
+git clone https://github.com/YOUR_ORG/wolfxcore.git /var/www/wolfxcore
+cd /var/www/wolfxcore
+chmod -R 755 storage bootstrap/cache</code></pre>
+
+    <h2>7 — Environment configuration</h2>
+    <ol class="steps">
+      <li>Copy the example env: <code>cp .env.example .env</code></li>
+      <li>Open <code>.env</code> in your editor and fill in the values below.</li>
+      <li>Generate an app key: <code>php artisan key:generate</code></li>
+    </ol>
+
+    <div class="pre-label">.env — key values</div>
+    <pre><code>APP_ENV=production
+APP_KEY=           <span class="cm"># auto-filled by key:generate</span>
+APP_URL=https://panel.xwolf.space
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=wolfxcore
+DB_USERNAME=wolfxcore
+DB_PASSWORD=your_strong_password
+
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
+CACHE_DRIVER=redis
+
+<span class="cm"># wolfXcore owner access</span>
+SUPER_ADMIN_KEY=change_me_to_a_secret_key</code></pre>
+
+    <div class="callout callout-danger">
+      <span class="callout-icon">🔒</span>
+      <div class="callout-body">
+        <strong>Never commit .env to version control.</strong>
+        The <code>SUPER_ADMIN_KEY</code> grants unrestricted owner access to the panel.
+        Choose a long, random value.
+      </div>
+    </div>
+
+    <h2>8 — Install dependencies &amp; build frontend</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>composer install --no-dev --optimize-autoloader
+yarn install
+yarn build
+
+php artisan migrate --force
+php artisan storage:link
+php artisan config:cache
+php artisan route:cache
+php artisan view:clear</code></pre>
+
+    <h2>9 — File permissions</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>chown -R www-data:www-data /var/www/wolfxcore
+chmod -R 755 /var/www/wolfxcore
+chmod -R 775 /var/www/wolfxcore/storage \
+             /var/www/wolfxcore/bootstrap/cache</code></pre>
+
+    <h2>10 — Nginx virtual host</h2>
+    <div class="pre-label">/etc/nginx/sites-available/wolfxcore</div>
+    <pre><code>server {
+    listen 80;
+    server_name panel.xwolf.space;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name panel.xwolf.space;
+
+    root /var/www/wolfxcore/public;
+    index index.php;
+
+    ssl_certificate     /etc/letsencrypt/live/panel.xwolf.space/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/panel.xwolf.space/privkey.pem;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+    }
+
+    location ~ /\.ht { deny all; }
+}</code></pre>
+    <div class="pre-label">bash</div>
+    <pre><code>ln -s /etc/nginx/sites-available/wolfxcore /etc/nginx/sites-enabled/
+nginx -t && systemctl reload nginx</code></pre>
+
+    <h2>11 — SSL with Certbot</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>apt install -y certbot python3-certbot-nginx
+certbot --nginx -d panel.xwolf.space</code></pre>
+
+    <h2>12 — Queue worker (Supervisor)</h2>
+    <div class="pre-label">/etc/supervisor/conf.d/wolfxcore-worker.conf</div>
+    <pre><code>[program:wolfxcore-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/wolfxcore/artisan queue:work redis \
+  --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/var/log/wolfxcore-worker.log
+stopwaitsecs=3600</code></pre>
+    <div class="pre-label">bash</div>
+    <pre><code>supervisorctl reread
+supervisorctl update
+supervisorctl start wolfxcore-worker:*</code></pre>
+
+    <h2>13 — Laravel scheduler (cron)</h2>
+    <p>
+      The scheduler drives nightly jobs such as <code>wxn:expire-servers</code>.
+      Laravel's scheduler only fires if a system cron calls <code>schedule:run</code> every minute.
+      Add the following entry to root's crontab:
+    </p>
+    <div class="pre-label">bash</div>
+    <pre><code>( crontab -l 2>/dev/null; echo "* * * * * php /var/www/wolfxcore/artisan schedule:run >> /dev/null 2>&1" ) | crontab -</code></pre>
+
+    <p>Verify the entry was saved:</p>
+    <div class="pre-label">bash</div>
+    <pre><code>crontab -l</code></pre>
+
+    <p>Test the expire-servers command in dry-run mode to confirm it loads without errors:</p>
+    <div class="pre-label">bash</div>
+    <pre><code>sudo -u www-data php /var/www/wolfxcore/artisan wxn:expire-servers --dry-run</code></pre>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body">
+        <strong>Already handled by vps-sync.sh.</strong>
+        The <code>scripts/vps-sync.sh</code> deploy script checks for this cron entry on every run
+        and adds it automatically if it is missing, so you only need to do this manually for the
+        very first install before <code>vps-sync.sh</code> has been run.
+      </div>
+    </div>
+
+    <h2>Deployment workflow</h2>
+    <p>After the initial install, updates follow this pattern:</p>
+    <ol class="steps">
+      <li>Push code to GitHub from your local machine.</li>
+      <li>SSH into the VPS and run <code>git pull</code> in <code>/var/www/wolfxcore</code>.</li>
+      <li>Run <code>php artisan migrate --force</code>.</li>
+      <li>Run <code>php artisan config:cache &amp;&amp; php artisan route:cache &amp;&amp; php artisan view:clear</code>.</li>
+      <li>Run <code>yarn build</code> to rebuild the frontend.</li>
+      <li>Reload services: <code>sudo systemctl reload php8.4-fpm nginx</code>.</li>
+    </ol>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Never write files directly to the VPS via SCP or tee.</strong>
+        Always push to GitHub and pull on the server.
+      </div>
+    </div>
+
+    <div class="doc-nav">
+      <a href="index.html">&larr; Overview</a>
+      <a href="wings.html" class="next">Wings Setup &rarr;</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <span>wolfXcore Documentation</span>
+  <span>panel.xwolf.space</span>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>

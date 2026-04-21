@@ -1,0 +1,54 @@
+/vendor
+*.DS_Store*
+!.env.ci
+!.env.example
+.env*
+.vagrant/*
+.vscode/*
+storage/framework/*
+/.idea
+/nbproject
+/.direnv
+
+node_modules
+*.log
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+.yarn
+public/assets/manifest.json
+
+# For local development with docker
+.dockerignore
+docker-compose.*
+!docker-compose.example.yml
+!docker-compose.example.yaml
+
+# for image related files
+misc
+.php-cs-fixer.cache
+coverage.xml
+resources/lang/locales.js
+.phpunit.result.cache
+
+/public/build
+/public/hot
+result
+
+# Compiled production assets (built on server)
+/public/assets
+
+# SQLite dev database
+database/*.sqlite
+database/*.sqlite-journal
+
+# Replit-specific files
+.replit
+replit.md
+start.sh
+shell.nix
+flake.nix
+flake.lock
+nohup.out
+.local/
+attached_assets/

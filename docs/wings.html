@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wings Setup — wolfXcore Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<header id="site-header"></header>
+
+<div class="layout">
+  <nav class="sidebar" id="site-sidebar"></nav>
+
+  <main class="main">
+    <div class="page-eyebrow">INFRASTRUCTURE</div>
+    <h1 class="page-title">WINGS SETUP</h1>
+    <p class="page-desc">
+      Wings is the lightweight Go daemon that runs on every node server. It communicates with the
+      panel over a secure WebSocket connection and manages Docker containers for each game server.
+    </p>
+
+    <h2>Architecture overview</h2>
+    <p>
+      The panel itself does <em>not</em> run game servers — it only coordinates. Wings runs on
+      separate node machines (can be the same VPS or different ones) and receives instructions
+      from the panel API. Each node requires its own Wings installation.
+    </p>
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body">
+        <strong>Current node</strong>
+        <code>https://node.xwolf.space:8080</code> — Wings v1.12.1 on Debian 13
+      </div>
+    </div>
+
+    <h2>Node requirements</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Requirement</th><th>Details</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>OS</td><td>Linux (Debian/Ubuntu recommended, kernel ≥ 5.4)</td></tr>
+          <tr><td>Docker</td><td>Latest stable (24+)</td></tr>
+          <tr><td>CPU</td><td>1+ vCPU (more = more servers)</td></tr>
+          <tr><td>RAM</td><td>Depends on hosted game servers</td></tr>
+          <tr><td>Open port</td><td>TCP 8080 (Wings HTTPS API)</td></tr>
+          <tr><td>Root access</td><td>Required — Wings runs as root</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>1 — Install Docker</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>curl -fsSL https://get.docker.com | bash
+systemctl enable --now docker</code></pre>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Disable AppArmor for Docker if on Ubuntu.</strong>
+        Some game server images fail with AppArmor restrictions.
+        <code>systemctl disable --now apparmor</code>
+      </div>
+    </div>
+
+    <h2>2 — Create Wings directory</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>mkdir -p /etc/wolfxcore
+mkdir -p /var/lib/wolfxcore/{volumes,backups,logs}</code></pre>
+
+    <h2>3 — Download Wings binary</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>curl -L -o /usr/local/bin/wings \
+  "https://github.com/wolfxcore/wings/releases/download/v1.12.1/wings_linux_amd64"
+chmod +x /usr/local/bin/wings</code></pre>
+
+    <h2>4 — Create the node in the panel</h2>
+    <ol class="steps">
+      <li>Log into the wolfXcore admin area at <code>/admin/nodes</code>.</li>
+      <li>Click <strong>Create New</strong>.</li>
+      <li>Fill in: name, FQDN (<code>node.xwolf.space</code>), port (<code>8080</code>), memory &amp; disk allocations.</li>
+      <li>Set <strong>Communication over SSL</strong> to <em>Yes</em> if Wings is behind SSL.</li>
+      <li>Save. Then navigate to the <strong>Configuration</strong> tab of the new node.</li>
+      <li>Click <strong>Generate Token</strong> — copy the YAML config block.</li>
+    </ol>
+
+    <h2>5 — Write the Wings config</h2>
+    <p>Paste the generated YAML into <code>/etc/wolfxcore/config.yml</code>.</p>
+    <p>A typical config looks like:</p>
+    <div class="pre-label">/etc/wolfxcore/config.yml</div>
+    <pre><code>debug: false
+uuid: <span class="nm">NODE-UUID-HERE</span>
+token_id: <span class="nm">TOKEN-ID-HERE</span>
+token: <span class="nm">TOKEN-SECRET-HERE</span>
+api:
+  host: 0.0.0.0
+  port: 8080
+  ssl:
+    enabled: true
+    cert: /etc/letsencrypt/live/node.xwolf.space/fullchain.pem
+    key:  /etc/letsencrypt/live/node.xwolf.space/privkey.pem
+  upload_limit: 100
+system:
+  data: /var/lib/wolfxcore/volumes
+  sftp:
+    bind_port: 2022
+remote: <span class="st">'https://panel.xwolf.space'</span>
+remote_configuration: <span class="st">'https://panel.xwolf.space'</span></code></pre>
+
+    <h2>6 — SSL certificate for the node</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>apt install -y certbot
+certbot certonly --standalone -d node.xwolf.space \
+  --agree-tos -m admin@xwolf.space --no-eff-email</code></pre>
+
+    <p>Add a cron to auto-renew:</p>
+    <div class="pre-label">bash</div>
+    <pre><code>echo "0 3 * * * root certbot renew --quiet \
+  --deploy-hook 'systemctl restart wings'" \
+  >> /etc/cron.d/certbot-renew</code></pre>
+
+    <h2>7 — Systemd service</h2>
+    <div class="pre-label">/etc/systemd/system/wings.service</div>
+    <pre><code>[Unit]
+Description=wolfXcore Wings Daemon
+After=docker.service
+Requires=docker.service
+PartOf=docker.service
+
+[Service]
+User=root
+WorkingDirectory=/etc/wolfxcore
+LimitNOFILE=4096
+PIDFile=/var/run/wings/daemon.pid
+ExecStart=/usr/local/bin/wings
+Restart=on-failure
+StartLimitInterval=180
+StartLimitBurst=30
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+    <div class="pre-label">bash</div>
+    <pre><code>systemctl enable --now wings
+systemctl status wings</code></pre>
+
+    <h2>8 — Port allocations</h2>
+    <p>
+      Allocations are the IP + port combinations that Wings can assign to game servers.
+      Without them the panel refuses to create servers (<em>"allocation id is required"</em>).
+      Add them once per node; they are shared across all servers on that node.
+    </p>
+    <p>
+      Go to <strong>Admin → Nodes → xwolf-node-1 → Allocations</strong> and enter the node IP
+      with a port or range, then click <strong>Submit</strong>.
+      Alternatively, insert them directly via SQL (fastest for bulk setup):
+    </p>
+    <div class="pre-label">sql</div>
+    <pre><code><span class="cm">-- Run inside the wolfxcore database</span>
+INSERT INTO allocations (node_id, ip, ip_alias, port, created_at, updated_at)
+VALUES
+  (1, '161.97.100.158', 'node.xwolf.space', 25565, NOW(), NOW()),
+  (1, '161.97.100.158', 'node.xwolf.space', 25566, NOW(), NOW());
+<span class="cm">-- Or use a range — see installation guide for the full loop query</span></code></pre>
+
+    <h3>xwolf-node-1 — current allocation ranges</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Port range</th><th>Count</th><th>Use</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>7777 – 7810</code></td><td>34</td><td>ARK: Survival Evolved, general game servers</td></tr>
+          <tr><td><code>9987 – 10022</code></td><td>6</td><td>TeamSpeak 3 / voice servers</td></tr>
+          <tr><td><code>25565 – 25600</code></td><td>36</td><td>Minecraft (Vanilla, Paper, Spigot, BungeeCord)</td></tr>
+          <tr><td><code>27015 – 27050</code></td><td>36</td><td>Rust, CS2, other Steam games</td></tr>
+          <tr><td><code>30000 – 30049</code></td><td>50</td><td>Node.js bots, Discord bots, APIs, general purpose</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body">
+        <strong>Auto-selection</strong> — the panel automatically picks the first free port when you create a server.
+        You only need to change it manually if you want a specific port number.
+        Once a port is assigned to a server it is removed from the available pool until that server is deleted.
+      </div>
+    </div>
+
+    <h2>9 — Firewall rules</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>ufw allow 8080/tcp   <span class="cm"># Wings API</span>
+ufw allow 2022/tcp   <span class="cm"># SFTP</span>
+ufw allow 443/tcp    <span class="cm"># HTTPS (if panel on same node)</span>
+ufw allow 80/tcp     <span class="cm"># HTTP (cert renewal)</span>
+ufw enable</code></pre>
+
+    <h2>Verifying the connection</h2>
+    <p>After Wings starts, check it connected successfully:</p>
+    <ol class="steps">
+      <li>In the panel admin area, go to <strong>Nodes</strong>.</li>
+      <li>The node should show a <strong>green heartbeat</strong> dot.</li>
+      <li>If red — check <code>journalctl -u wings -f</code> for errors.</li>
+      <li>Verify the panel's URL is reachable from the node machine.</li>
+    </ol>
+
+    <div class="callout callout-success">
+      <span class="callout-icon">✅</span>
+      <div class="callout-body">
+        <strong>Tip</strong>
+        Run <code>wings --debug</code> temporarily to see verbose output during troubleshooting.
+        Stop it with <code>Ctrl+C</code>, then restart the service.
+      </div>
+    </div>
+
+    <h2>Updating Wings</h2>
+    <div class="pre-label">bash</div>
+    <pre><code>systemctl stop wings
+curl -L -o /usr/local/bin/wings \
+  "https://github.com/wolfxcore/wings/releases/download/vX.Y.Z/wings_linux_amd64"
+chmod +x /usr/local/bin/wings
+systemctl start wings</code></pre>
+
+    <div class="doc-nav">
+      <a href="installation.html">&larr; Installation</a>
+      <a href="billing.html" class="next">Billing &amp; M-Pesa &rarr;</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <span>wolfXcore Documentation</span>
+  <span>panel.xwolf.space</span>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>

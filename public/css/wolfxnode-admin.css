@@ -1,0 +1,396 @@
+/* ══════════════════════════════════════════════
+   wolfXcore Admin Panel — Cyberpunk Sidebar CSS
+   High-specificity overrides for AdminLTE skin-blue
+   ══════════════════════════════════════════════ */
+
+/* ── Sidebar shell ── */
+.skin-blue .main-sidebar,
+.skin-blue .left-side {
+    background-color: #020b02 !important;
+    border-right: 1px solid rgba(0,255,0,0.12) !important;
+}
+
+/* ── Top logo ── */
+.skin-blue .main-header .logo {
+    background-color: #010801 !important;
+    border-bottom: 1px solid rgba(0,255,0,0.12) !important;
+    border-right: 1px solid rgba(0,255,0,0.12) !important;
+    font-family: 'Orbitron', monospace !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    letter-spacing: 0.04em !important;
+}
+.skin-blue .main-header .logo:hover {
+    background-color: #010801 !important;
+}
+.skin-blue .main-header .navbar {
+    background-color: #010801 !important;
+    border-bottom: 1px solid rgba(0,255,0,0.12) !important;
+}
+.skin-blue .main-header .logo .logo-mini,
+.skin-blue .main-header .logo .logo-lg {
+    color: #fff !important;
+}
+
+/* ── Navbar top icons ── */
+.skin-blue .main-header .navbar .nav > li > a {
+    color: rgba(0,220,0,0.7) !important;
+}
+.skin-blue .main-header .navbar .nav > li > a:hover,
+.skin-blue .main-header .navbar .nav > li > a:focus {
+    background: rgba(0,255,0,0.06) !important;
+    color: #00ff00 !important;
+}
+.skin-blue .main-header .navbar .sidebar-toggle {
+    color: rgba(0,220,0,0.7) !important;
+}
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+    background: rgba(0,255,0,0.06) !important;
+    color: #00ff00 !important;
+}
+
+/* ── Section headers ── */
+.skin-blue .sidebar-menu > li.header {
+    color: rgba(0,255,0,0.32) !important;
+    background: transparent !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.6rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2em !important;
+    padding: 18px 16px 6px 16px !important;
+}
+
+/* ── All nav items — default state ── */
+.skin-blue .sidebar-menu > li > a {
+    color: rgba(0,220,0,0.65) !important;
+    background: transparent !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.78rem !important;
+    font-weight: 400 !important;
+    padding: 11px 16px 11px 18px !important;
+    border-left: 3px solid transparent !important;
+    transition: all 0.15s !important;
+}
+
+/* ── Nav item hover ── */
+.skin-blue .sidebar-menu > li > a:hover,
+.skin-blue .sidebar-menu > li:hover > a {
+    background: rgba(0,255,0,0.05) !important;
+    color: #00ff00 !important;
+    border-left-color: rgba(0,255,0,0.4) !important;
+}
+
+/* ── Active nav item — KILL the AdminLTE green block ── */
+.skin-blue .sidebar-menu > li.active > a,
+.skin-blue .sidebar-menu > li.active > a:hover,
+.skin-blue .sidebar-menu > li.active > a:focus {
+    color: #00ff00 !important;
+    background: rgba(0,255,0,0.07) !important;
+    border-left: 3px solid #00ff00 !important;
+    font-weight: 600 !important;
+    text-shadow: 0 0 8px rgba(0,255,0,0.35) !important;
+    box-shadow: none !important;
+}
+/* Kill the AdminLTE green bar on the left of active items */
+.skin-blue .sidebar-menu > li.active > a::before,
+.skin-blue .sidebar-menu > li.active > a::after {
+    display: none !important;
+}
+
+/* ── Icons — neon green box ── */
+.skin-blue .sidebar-menu > li > a > i {
+    width: 22px !important;
+    height: 22px !important;
+    line-height: 22px !important;
+    text-align: center !important;
+    background: rgba(0,255,0,0.09) !important;
+    border: 1px solid rgba(0,255,0,0.22) !important;
+    border-radius: 4px !important;
+    color: #00ff00 !important;
+    font-size: 0.72rem !important;
+    margin-right: 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    transition: all 0.15s !important;
+}
+.skin-blue .sidebar-menu > li.active > a > i {
+    background: rgba(0,255,0,0.18) !important;
+    border-color: #00ff00 !important;
+    box-shadow: 0 0 6px rgba(0,255,0,0.25) !important;
+}
+.skin-blue .sidebar-menu > li:hover > a > i {
+    background: rgba(0,255,0,0.14) !important;
+    border-color: rgba(0,255,0,0.45) !important;
+}
+
+/* ── Kill the AdminLTE active sidebar arrow ── */
+.skin-blue .sidebar-menu > li.active > a .pull-right-container,
+.skin-blue .sidebar-menu > li.active > a > .pull-right {
+    display: none !important;
+}
+
+/* ── Sidebar user panel ── */
+.skin-blue .sidebar-menu .user-panel {
+    border-bottom: 1px solid rgba(0,255,0,0.1) !important;
+    padding: 14px 16px 12px !important;
+}
+.skin-blue .user-panel > .info,
+.skin-blue .user-panel > .info > p,
+.skin-blue .user-panel > .info > a {
+    color: #00ff00 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+}
+.skin-blue .user-panel > .info small {
+    color: rgba(0,200,0,0.5) !important;
+    font-size: 0.67rem !important;
+}
+.skin-blue .user-panel > .image > img {
+    border: 1px solid rgba(0,255,0,0.4) !important;
+    box-shadow: 0 0 8px rgba(0,255,0,0.15) !important;
+}
+
+/* ── Sidebar scrollbar ── */
+.skin-blue .sidebar {
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(0,255,0,0.18) transparent !important;
+}
+.skin-blue .sidebar::-webkit-scrollbar { width: 3px !important; }
+.skin-blue .sidebar::-webkit-scrollbar-track { background: transparent !important; }
+.skin-blue .sidebar::-webkit-scrollbar-thumb { background: rgba(0,255,0,0.18) !important; border-radius: 2px !important; }
+
+/* ── Content wrapper ── */
+.skin-blue .content-wrapper,
+.skin-blue .right-side {
+    background: #030e03 !important;
+}
+
+/* ── Footer ── */
+.skin-blue .main-footer {
+    background: #010801 !important;
+    border-top: 1px solid rgba(0,255,0,0.1) !important;
+    color: rgba(0,200,0,0.45) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.7rem !important;
+}
+
+/* ── Content header ── */
+.content-header {
+    padding: 16px 20px 8px !important;
+}
+.content-header h1 {
+    font-family: 'Orbitron', monospace !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: #00ff00 !important;
+    letter-spacing: 0.06em !important;
+    text-shadow: 0 0 10px rgba(0,255,0,0.28) !important;
+}
+.content-header h1 small {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.68rem !important;
+    color: rgba(0,200,0,0.42) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.02em !important;
+    margin-left: 10px !important;
+}
+.breadcrumb {
+    background: transparent !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.7rem !important;
+    color: rgba(0,200,0,0.45) !important;
+    padding: 4px 0 !important;
+    margin-bottom: 0 !important;
+}
+.breadcrumb > li + li::before { color: rgba(0,255,0,0.25) !important; }
+.breadcrumb a { color: rgba(0,200,0,0.6) !important; }
+.breadcrumb a:hover { color: #00ff00 !important; }
+.breadcrumb > .active { color: rgba(0,255,0,0.8) !important; }
+
+/* ══ BOXES / CARDS ══ */
+.box {
+    background: rgba(1,10,1,0.9) !important;
+    border: 1px solid rgba(0,255,0,0.1) !important;
+    border-top: none !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.55) !important;
+}
+.box.box-primary   { border-top: 2px solid #00ff00 !important; }
+.box.box-default   { border-top: 2px solid rgba(0,255,0,0.3) !important; }
+.box.box-success   { border-top: 2px solid #00e676 !important; }
+.box.box-danger    { border-top: 2px solid #ff4444 !important; }
+.box.box-warning   { border-top: 2px solid #ffaa00 !important; }
+.box.box-info      { border-top: 2px solid #4db8ff !important; }
+.box-header {
+    background: rgba(0,18,0,0.45) !important;
+    border-bottom: 1px solid rgba(0,255,0,0.08) !important;
+    padding: 12px 16px !important;
+}
+.box-title {
+    color: rgba(0,255,0,0.88) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+}
+.box-body {
+    color: rgba(170,255,170,0.82) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.8rem !important;
+}
+.box-footer {
+    background: rgba(0,12,0,0.4) !important;
+    border-top: 1px solid rgba(0,255,0,0.07) !important;
+}
+.box-tools .btn { margin-top: 0 !important; }
+
+/* ══ TABLES ══ */
+.table {
+    color: rgba(170,255,170,0.82) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.76rem !important;
+}
+.table > thead > tr > th {
+    border-bottom: 1px solid rgba(0,255,0,0.18) !important;
+    color: rgba(0,255,0,0.55) !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    background: rgba(0,18,0,0.5) !important;
+}
+.table > tbody > tr > td {
+    border-top: 1px solid rgba(0,255,0,0.05) !important;
+    color: rgba(170,255,170,0.78) !important;
+    vertical-align: middle !important;
+}
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+    background: rgba(0,255,0,0.04) !important;
+}
+
+/* ══ FORMS ══ */
+.form-control {
+    background: rgba(0,18,0,0.55) !important;
+    border: 1px solid rgba(0,255,0,0.18) !important;
+    color: rgba(180,255,180,0.88) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.78rem !important;
+    border-radius: 3px !important;
+}
+.form-control:focus {
+    border-color: #00ff00 !important;
+    box-shadow: 0 0 0 2px rgba(0,255,0,0.1) !important;
+    background: rgba(0,22,0,0.65) !important;
+    color: #00ff00 !important;
+    outline: none !important;
+}
+.form-control::placeholder { color: rgba(0,180,0,0.3) !important; }
+label {
+    color: rgba(0,215,0,0.65) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+    margin-bottom: 4px !important;
+}
+.field-required { color: #ff5555 !important; }
+.text-muted { color: rgba(0,190,0,0.38) !important; }
+.help-block { color: rgba(0,180,0,0.38) !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.7rem !important; }
+.input-group-addon {
+    background: rgba(0,30,0,0.55) !important;
+    border: 1px solid rgba(0,255,0,0.18) !important;
+    color: rgba(0,255,0,0.65) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+}
+textarea.form-control { resize: vertical !important; }
+
+/* ══ BUTTONS ══ */
+.btn { font-family: 'JetBrains Mono', monospace !important; font-size: 0.72rem !important; letter-spacing: 0.04em !important; border-radius: 3px !important; }
+.btn-primary { background: rgba(0,160,0,0.14) !important; border: 1px solid rgba(0,255,0,0.38) !important; color: #00ff00 !important; }
+.btn-primary:hover, .btn-primary:focus { background: rgba(0,255,0,0.18) !important; border-color: #00ff00 !important; color: #00ff00 !important; box-shadow: 0 0 8px rgba(0,255,0,0.18) !important; }
+.btn-default { background: rgba(0,18,0,0.5) !important; border: 1px solid rgba(0,255,0,0.14) !important; color: rgba(0,200,0,0.6) !important; }
+.btn-default:hover { background: rgba(0,35,0,0.55) !important; border-color: rgba(0,255,0,0.28) !important; color: #00ff00 !important; }
+.btn-success { background: rgba(0,190,70,0.14) !important; border: 1px solid rgba(0,220,90,0.38) !important; color: #00e676 !important; }
+.btn-success:hover { background: rgba(0,220,90,0.22) !important; border-color: #00e676 !important; color: #00e676 !important; }
+.btn-danger { background: rgba(190,18,18,0.14) !important; border: 1px solid rgba(255,70,70,0.38) !important; color: #ff6b6b !important; }
+.btn-danger:hover { background: rgba(255,40,40,0.18) !important; border-color: #ff4444 !important; }
+.btn-warning { background: rgba(190,120,0,0.14) !important; border: 1px solid rgba(255,165,0,0.38) !important; color: #ffaa00 !important; }
+.btn-warning:hover { background: rgba(255,165,0,0.2) !important; border-color: #ffaa00 !important; }
+.btn-info { background: rgba(0,130,220,0.12) !important; border: 1px solid rgba(0,160,255,0.35) !important; color: #4db8ff !important; }
+.btn-sm { padding: 5px 12px !important; font-size: 0.7rem !important; }
+.btn-xs { padding: 2px 7px !important; font-size: 0.65rem !important; }
+
+/* ══ LABELS / BADGES ══ */
+.label { font-family: 'JetBrains Mono', monospace !important; font-size: 0.65rem !important; letter-spacing: 0.04em !important; border-radius: 2px !important; padding: 2px 7px !important; }
+.label-success { background: rgba(0,190,70,0.18) !important; color: #00e676 !important; }
+.label-default { background: rgba(0,70,0,0.25) !important; color: rgba(0,180,0,0.6) !important; }
+.label-danger  { background: rgba(190,18,18,0.18) !important; color: #ff6b6b !important; }
+.label-warning { background: rgba(190,120,0,0.18) !important; color: #ffaa00 !important; }
+.label-info    { background: rgba(0,130,220,0.14) !important; color: #4db8ff !important; }
+.label-primary { background: rgba(0,160,0,0.14) !important; color: #00ff00 !important; }
+
+/* ══ ALERTS ══ */
+.alert { font-family: 'JetBrains Mono', monospace !important; font-size: 0.76rem !important; border-radius: 3px !important; }
+.alert-success { background: rgba(0,190,70,0.08) !important; border-color: rgba(0,200,80,0.38) !important; color: #00e676 !important; }
+.alert-danger  { background: rgba(190,18,18,0.08) !important; border-color: rgba(255,70,70,0.38) !important; color: #ff6b6b !important; }
+.alert-warning { background: rgba(190,120,0,0.08) !important; border-color: rgba(255,165,0,0.32) !important; color: #ffaa00 !important; }
+.alert-info    { background: rgba(0,130,220,0.08) !important; border-color: rgba(0,160,255,0.32) !important; color: #4db8ff !important; }
+
+/* ══ BREADCRUMB ══ */
+.breadcrumb { background: transparent !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.7rem !important; padding: 4px 0 !important; margin-bottom: 0 !important; }
+.breadcrumb > li + li::before { color: rgba(0,255,0,0.25) !important; }
+.breadcrumb a { color: rgba(0,200,0,0.58) !important; }
+.breadcrumb a:hover { color: #00ff00 !important; }
+.breadcrumb > .active { color: rgba(0,255,0,0.78) !important; }
+
+/* ══ MODALS ══ */
+.modal-content { background: #020d02 !important; border: 1px solid rgba(0,255,0,0.18) !important; border-radius: 4px !important; box-shadow: 0 8px 48px rgba(0,0,0,0.9) !important; }
+.modal-header { background: rgba(0,18,0,0.5) !important; border-bottom: 1px solid rgba(0,255,0,0.1) !important; }
+.modal-title { color: #00ff00 !important; font-family: 'Orbitron', monospace !important; font-size: 0.88rem !important; letter-spacing: 0.06em !important; }
+.modal-body { color: rgba(170,255,170,0.82) !important; font-family: 'JetBrains Mono', monospace !important; }
+.modal-footer { background: rgba(0,12,0,0.4) !important; border-top: 1px solid rgba(0,255,0,0.08) !important; }
+.close { color: #00ff00 !important; opacity: 0.6 !important; text-shadow: none !important; }
+.close:hover { opacity: 1 !important; color: #00ff00 !important; }
+
+/* ══ CODE ══ */
+code { background: rgba(0,35,0,0.55) !important; color: #00e676 !important; border: 1px solid rgba(0,255,0,0.12) !important; border-radius: 2px !important; padding: 1px 5px !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.82em !important; }
+
+/* ══ STAT BOXES ══ */
+.small-box { background: rgba(1,10,1,0.9) !important; border: 1px solid rgba(0,255,0,0.1) !important; border-radius: 4px !important; }
+.small-box h3 { color: #00ff00 !important; font-family: 'Orbitron', monospace !important; text-shadow: 0 0 10px rgba(0,255,0,0.35) !important; }
+.small-box p { color: rgba(0,200,0,0.62) !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.74rem !important; }
+.small-box .icon { color: rgba(0,255,0,0.08) !important; }
+.small-box .small-box-footer { background: rgba(0,255,0,0.04) !important; color: rgba(0,210,0,0.55) !important; border-top: 1px solid rgba(0,255,0,0.07) !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.7rem !important; }
+.small-box .small-box-footer:hover { background: rgba(0,255,0,0.07) !important; color: #00ff00 !important; }
+
+/* ══ PAGINATION ══ */
+.pagination > li > a, .pagination > li > span { background: rgba(0,18,0,0.55) !important; border: 1px solid rgba(0,255,0,0.13) !important; color: rgba(0,210,0,0.65) !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.72rem !important; }
+.pagination > li > a:hover { background: rgba(0,255,0,0.07) !important; color: #00ff00 !important; border-color: rgba(0,255,0,0.28) !important; }
+.pagination > .active > a, .pagination > .active > span { background: rgba(0,255,0,0.1) !important; border-color: #00ff00 !important; color: #00ff00 !important; }
+
+/* ══ DROPDOWN ══ */
+.dropdown-menu { background: #020d02 !important; border: 1px solid rgba(0,255,0,0.18) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.8) !important; }
+.dropdown-menu > li > a { color: rgba(0,210,0,0.78) !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.76rem !important; }
+.dropdown-menu > li > a:hover { background: rgba(0,255,0,0.07) !important; color: #00ff00 !important; }
+.dropdown-menu .divider { background: rgba(0,255,0,0.08) !important; }
+
+/* ══ HR ══ */
+hr { border-color: rgba(0,255,0,0.09) !important; }
+
+/* ══ NAV TABS ══ */
+.nav-tabs { border-bottom: 1px solid rgba(0,255,0,0.13) !important; }
+.nav-tabs > li > a { color: rgba(0,200,0,0.58) !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.76rem !important; border: 1px solid transparent !important; }
+.nav-tabs > li > a:hover { background: rgba(0,255,0,0.04) !important; border-color: rgba(0,255,0,0.14) !important; color: #00ff00 !important; }
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover { background: rgba(0,18,0,0.6) !important; border-color: rgba(0,255,0,0.18) !important; border-bottom-color: transparent !important; color: #00ff00 !important; }
+
+/* ══ SCROLLBAR (webkit) ══ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: rgba(0,8,0,0.4); }
+::-webkit-scrollbar-thumb { background: rgba(0,255,0,0.16); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,255,0,0.32); }
+
+/* ══ INPUT CHECKBOX ══ */
+input[type="checkbox"], input[type="radio"] { accent-color: #00ff00 !important; }

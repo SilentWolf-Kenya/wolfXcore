@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maintenance Mode — wolfXcore Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<header id="site-header"></header>
+
+<div class="layout">
+  <nav class="sidebar" id="site-sidebar"></nav>
+
+  <main class="main">
+    <div class="page-eyebrow">FEATURES</div>
+    <h1 class="page-title">MAINTENANCE MODE</h1>
+    <p class="page-desc">
+      wolfXcore includes a built-in site-wide maintenance mode. When enabled, all visitors
+      (except root admins) see a neon 503 page instead of the normal panel.
+    </p>
+
+    <h2>Enabling maintenance mode</h2>
+    <p>There are two ways to enable maintenance mode:</p>
+
+    <h3>Via the Super Admin panel (recommended)</h3>
+    <ol class="steps">
+      <li>Go to <code>/admin/wxn-super/auth</code> and authenticate.</li>
+      <li>Navigate to <strong>Maintenance Mode</strong> in the Super Admin dashboard.</li>
+      <li>Toggle the switch to <strong>ON</strong>.</li>
+      <li>Optionally set a custom maintenance message.</li>
+      <li>Save — the change takes effect immediately for all new requests.</li>
+    </ol>
+
+    <h3>Via the database</h3>
+    <div class="pre-label">SQL</div>
+    <pre><code>INSERT INTO settings (<span class="nm">key</span>, <span class="nm">value</span>) VALUES (<span class="st">'maintenance::enabled'</span>, <span class="st">'true'</span>)
+ON DUPLICATE KEY UPDATE <span class="nm">value</span> = <span class="st">'true'</span>;</code></pre>
+
+    <h2>How it works</h2>
+    <p>
+      The <code>SiteMaintenanceMiddleware</code> is applied globally to all web routes. On every
+      request it checks the <code>maintenance::enabled</code> setting in the DB. If enabled, it
+      returns the neon 503 maintenance page — unless the requesting user is a root admin.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Visitor type</th><th>Maintenance ON</th><th>Maintenance OFF</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Regular user</td><td>503 maintenance page</td><td>Normal panel</td></tr>
+          <tr><td>Panel admin</td><td>503 maintenance page</td><td>Normal panel</td></tr>
+          <tr><td>Root admin</td><td>Normal panel (bypassed)</td><td>Normal panel</td></tr>
+          <tr><td>Super Admin session</td><td>Normal panel (bypassed)</td><td>Normal panel</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body">
+        <strong>Root admin bypass.</strong>
+        Users with root admin status in the panel automatically bypass maintenance mode.
+        This is handled in <code>SiteMaintenanceMiddleware</code> — no configuration needed.
+      </div>
+    </div>
+
+    <h2>The 503 maintenance page</h2>
+    <p>
+      Visitors in maintenance mode see the neon wolfXcore 503 page
+      (<code>resources/views/errors/site-maintenance.blade.php</code>). It features:
+    </p>
+    <ul>
+      <li>Animated grid background with neon green overlay</li>
+      <li>Pulsing status indicator ("Maintenance in progress")</li>
+      <li>wolfXcore branding (Orbitron + JetBrains Mono fonts)</li>
+      <li>Discrete admin login link at the bottom</li>
+      <li>Fully self-contained — no JavaScript, no external dependencies besides Google Fonts</li>
+    </ul>
+
+    <h2>Disabling maintenance mode</h2>
+
+    <h3>Via the Super Admin panel</h3>
+    <ol class="steps">
+      <li>Authenticate at <code>/admin/wxn-super/auth</code>.</li>
+      <li>Toggle maintenance mode to <strong>OFF</strong> and save.</li>
+    </ol>
+
+    <h3>Via the database</h3>
+    <div class="pre-label">SQL</div>
+    <pre><code>UPDATE settings SET <span class="nm">value</span> = <span class="st">'false'</span>
+WHERE <span class="nm">key</span> = <span class="st">'maintenance::enabled'</span>;</code></pre>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Do not use <code>php artisan down</code>.</strong>
+        The standard Laravel maintenance mode (<code>artisan down</code>) is separate from
+        wolfXcore's built-in maintenance mode. Use the Super Admin panel toggle — it's stored
+        in the database and does not affect the queue workers, scheduler, or Wings connections.
+      </div>
+    </div>
+
+    <h2>Customising the 503 page</h2>
+    <p>
+      Edit <code>resources/views/errors/site-maintenance.blade.php</code> to change the message,
+      add an estimated return time, or adjust the styling. The file is pure HTML/CSS with
+      optional Blade variables.
+    </p>
+
+    <p>To show a custom message set via the Super Admin panel, use:</p>
+    <div class="pre-label">Blade</div>
+    <pre><code>@if(config(<span class="st">'wolfxcore.maintenance_message'</span>))
+  &lt;p&gt;{{ config(<span class="st">'wolfxcore.maintenance_message'</span>) }}&lt;/p&gt;
+@endif</code></pre>
+
+    <h2>Relevant source files</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>File</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>app/Http/Middleware/SiteMaintenanceMiddleware.php</code></td><td>Intercepts requests and returns 503 when enabled</td></tr>
+          <tr><td><code>resources/views/errors/site-maintenance.blade.php</code></td><td>Neon 503 page shown to visitors</td></tr>
+          <tr><td><code>app/Http/Controllers/Admin/SuperAdminController.php</code></td><td>Handles the toggle via Super Admin panel</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-nav">
+      <a href="plans.html">&larr; Plans</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <span>wolfXcore Documentation</span>
+  <span>panel.xwolf.space</span>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>

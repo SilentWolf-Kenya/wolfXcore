@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Super Admin Panel — wolfXcore Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<header id="site-header"></header>
+
+<div class="layout">
+  <nav class="sidebar" id="site-sidebar"></nav>
+
+  <main class="main">
+    <div class="page-eyebrow">FEATURES</div>
+    <h1 class="page-title">SUPER ADMIN PANEL</h1>
+    <p class="page-desc">
+      The Super Admin panel is a standalone, owner-only control interface that sits outside normal
+      panel authentication. It provides elevated capabilities not available to regular admins.
+    </p>
+
+    <div class="callout callout-danger">
+      <span class="callout-icon">🔒</span>
+      <div class="callout-body">
+        <strong>Owner access only.</strong>
+        The Super Admin panel bypasses all standard authentication. Access is gated solely by
+        the <code>SUPER_ADMIN_KEY</code> secret. Keep this key private and rotate it immediately
+        if compromised.
+      </div>
+    </div>
+
+    <h2>Accessing the panel</h2>
+    <p>The Super Admin panel is accessible at a separate URL that is not linked from the main
+    panel UI:</p>
+    <div class="pre-label">URL</div>
+    <pre><code>https://panel.xwolf.space/admin/wxn-super/auth</code></pre>
+
+    <p>You will see a minimal password prompt styled with the wolfXcore neon aesthetic.
+    Enter your <code>SUPER_ADMIN_KEY</code> to gain access. A session is created and persists
+    until you close the browser or the session expires.</p>
+
+    <h3>Authentication flow</h3>
+    <ol class="steps">
+      <li>Visit <code>/admin/wxn-super/auth</code>.</li>
+      <li>Enter the secret key from your <code>.env</code> / config.</li>
+      <li>The panel checks <code>wolfxcore.super_admin_key</code> against your input.</li>
+      <li>On success, a session flag is set and you are redirected to the dashboard.</li>
+      <li>On failure, the error <em>"Invalid key"</em> is shown. All attempts are logged.</li>
+    </ol>
+
+    <h2>Technical implementation</h2>
+    <p>
+      Super Admin routes are registered directly in <code>RouteServiceProvider</code>,
+      <em>outside</em> the <code>AdminAuthenticate</code> middleware group. This means:
+    </p>
+    <ul>
+      <li>No panel admin login is required — you don't need an account in the panel.</li>
+      <li>The routes are accessible even if the panel admin area is locked down.</li>
+      <li>Access is session-based — the session cookie grants access until expiry.</li>
+    </ul>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>File</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>app/Http/Controllers/Admin/SuperAdminController.php</code></td><td>Controller for all Super Admin pages &amp; actions</td></tr>
+          <tr><td><code>app/Http/Middleware/SuperAdminMiddleware.php</code></td><td>Checks the session flag for authenticated access</td></tr>
+          <tr><td><code>app/Providers/RouteServiceProvider.php</code></td><td>Route registration (outside AdminAuthenticate)</td></tr>
+          <tr><td><code>resources/views/admin/super/</code></td><td>All Super Admin Blade views</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Super Admin features</h2>
+
+    <h3>Toggle admins</h3>
+    <p>
+      Promote or demote panel users to admin status without going through the regular admin
+      user editor. Useful for emergency access restoration.
+    </p>
+
+    <h3>Branding &amp; theme customisation</h3>
+    <p>
+      Change panel-wide branding values — logo, colour overrides, brand name — stored in the
+      DB settings table and applied at render time.
+    </p>
+
+    <h3>Notifications</h3>
+    <p>
+      Broadcast a banner notification to all logged-in users. Useful for announcing upcoming
+      maintenance or service changes.
+    </p>
+
+    <h3>Payment settings</h3>
+    <p>
+      Set or rotate Paystack live API keys (<code>paystack::secret_key</code>,
+      <code>paystack::public_key</code>) and the active currency without touching <code>.env</code>
+      or redeploying. See the <a href="billing.html">Billing</a> page for details.
+    </p>
+
+    <h3>Maintenance mode</h3>
+    <p>
+      Toggle site-wide maintenance mode on or off. When enabled, all non-admin visitors see
+      the neon 503 page. Root admins are automatically bypassed.
+      See the <a href="maintenance.html">Maintenance Mode</a> page for full details.
+    </p>
+
+    <h2>Setting the secret key</h2>
+    <p>The key is read from the <code>wolfxcore.super_admin_key</code> config value, which
+    pulls from the <code>SUPER_ADMIN_KEY</code> environment variable.</p>
+
+    <div class="pre-label">.env</div>
+    <pre><code>SUPER_ADMIN_KEY=replace_this_with_a_long_random_secret</code></pre>
+
+    <p>Generate a strong random key from the command line:</p>
+    <div class="pre-label">bash</div>
+    <pre><code>openssl rand -hex 32</code></pre>
+
+    <p>After changing the key in <code>.env</code>, clear the config cache:</p>
+    <div class="pre-label">bash</div>
+    <pre><code>php artisan config:cache</code></pre>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>All access attempts are logged.</strong>
+        Both successful and failed authentication attempts are written to the Laravel log.
+        Monitor <code>storage/logs/laravel.log</code> for unusual activity.
+      </div>
+    </div>
+
+    <h2>Ending a Super Admin session</h2>
+    <p>
+      To end your session, navigate to <code>/admin/wxn-super/logout</code> or simply close
+      the browser. Sessions expire after the standard Laravel session lifetime
+      (default: 120 minutes, configurable in <code>config/session.php</code>).
+    </p>
+
+    <div class="doc-nav">
+      <a href="billing.html">&larr; Billing &amp; M-Pesa</a>
+      <a href="plans.html" class="next">Plans &rarr;</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <span>wolfXcore Documentation</span>
+  <span>panel.xwolf.space</span>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>

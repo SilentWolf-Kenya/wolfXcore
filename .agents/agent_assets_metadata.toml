@@ -1,0 +1,43 @@
+uploads = []
+
+[[generated]]
+id = "wRC7CRO0FiLWHTNCY2agf"
+uri = "file://attached_assets/wolfxpair-logo.png"
+type = "image"
+title = "wolfXpair cyberpunk wolf logo"
+
+[[generated]]
+id = "_yi1yyArDPwbFoK8NKqpc"
+uri = "file://attached_assets/wolfxpair-icon.png"
+type = "image"
+title = "wolfXpair favicon icon cyan wolf"
+
+[[generated]]
+id = "FBgUbLdvEQxVISaEPD2xp"
+uri = "file://attached_assets/wolfxpair-og.png"
+type = "image"
+title = "wolfXpair OG social preview banner"
+
+[[outputs]]
+id = "U-yQpZw6woOH5C1mN9WoX"
+uri = "file://docs/wolfxcore-documentation.md"
+type = "text"
+title = "wolfXcore Documentation"
+
+[[outputs]]
+id = "wPPPa5c228mu83UlZe7DW"
+uri = "file://wolfxcore-docs.tar.gz"
+type = "unspecified"
+title = "wolfXcore Docs — Complete Site Archive"
+
+[[outputs]]
+id = "QJgmnxSGxx4mcit4tWf4O"
+uri = "file://attached_assets/wolfxpair-logo.png"
+type = "image"
+title = "wolfXpair Logo"
+
+[[outputs]]
+id = "WF59uer0awyimwE1ysciC"
+uri = "file://attached_assets/wolfxpair-og.png"
+type = "image"
+title = "wolfXpair OG / Social Preview Banner"

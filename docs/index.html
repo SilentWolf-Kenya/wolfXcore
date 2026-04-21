@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overview — wolfXcore Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<header id="site-header"></header>
+
+<div class="layout">
+  <nav class="sidebar" id="site-sidebar"></nav>
+
+  <main class="main">
+    <div class="page-eyebrow">DOCUMENTATION</div>
+    <h1 class="page-title">WOLFXCORE PANEL</h1>
+    <p class="page-desc">
+      Custom-branded game server management panel forked from wolfXcore.
+      Built with <strong>Laravel 11 + React / TypeScript</strong>, running on a neon-green
+      cyberpunk aesthetic.
+    </p>
+
+    <h2>What is wolfXcore?</h2>
+    <p>
+      wolfXcore is a self-hosted game server control panel. It lets you spin up, manage, and
+      monitor game servers from a single dashboard — including player slots, resource limits,
+      file management, console access, and scheduled tasks.
+    </p>
+    <p>
+      Under the hood it uses <strong>Wings</strong>, a lightweight Go daemon that runs on every
+      node and executes server containers via Docker. The panel itself coordinates Wings over a
+      secure WebSocket API.
+    </p>
+
+    <div class="callout callout-success">
+      <span class="callout-icon">⚡</span>
+      <div class="callout-body">
+        <strong>Live installation</strong>
+        Panel: <code>https://panel.xwolf.space</code> — Wings: <code>https://node.xwolf.space:8080</code>
+      </div>
+    </div>
+
+    <h2>Tech stack</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>PHP Backend</td><td>Laravel</td><td>11 (PHP 8.4)</td></tr>
+          <tr><td>Frontend</td><td>React + TypeScript</td><td>17 / Webpack 5</td></tr>
+          <tr><td>Database</td><td>MariaDB (prod) / SQLite (dev)</td><td>—</td></tr>
+          <tr><td>Cache / Queue</td><td>Redis + Supervisor</td><td>—</td></tr>
+          <tr><td>Web server</td><td>Nginx + PHP-FPM</td><td>—</td></tr>
+          <tr><td>Daemon</td><td>Wings (Go)</td><td>v1.12.1</td></tr>
+          <tr><td>OS</td><td>Debian 13 Trixie</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Feature highlights</h2>
+    <ul>
+      <li>Full server lifecycle management (create / start / stop / reinstall / delete)</li>
+      <li>Real-time console over WebSocket</li>
+      <li>File manager with inline editor</li>
+      <li>Per-server resource limits (CPU, RAM, disk) with port number shown on each server card</li>
+      <li>Schedule tasks &amp; database management</li>
+      <li><strong>Paystack M-Pesa STK push</strong> billing integration (KES)</li>
+      <li>Super Admin panel — owner-only controls outside normal auth</li>
+      <li>Site-wide maintenance mode with neon 503 page</li>
+      <li>Custom plans: LIMITED (KES 50) / UNLIMITED (KES 100)</li>
+    </ul>
+
+    <h2>Documentation sections</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Page</th><th>What it covers</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a href="installation.html">Installation</a></td><td>Server prerequisites, cloning, env setup, first boot</td></tr>
+          <tr><td><a href="wings.html">Wings Setup</a></td><td>Installing &amp; configuring the Wings daemon on a node</td></tr>
+          <tr><td><a href="billing.html">Billing &amp; M-Pesa</a></td><td>Paystack API keys, STK push flow, plan gating</td></tr>
+          <tr><td><a href="super-admin.html">Super Admin Panel</a></td><td>Owner-only panel, secret key, features</td></tr>
+          <tr><td><a href="plans.html">Plans</a></td><td>LIMITED vs UNLIMITED, quota enforcement, upgrades</td></tr>
+          <tr><td><a href="maintenance.html">Maintenance Mode</a></td><td>Enabling/disabling maintenance, bypass rules</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="neon-line"></div>
+
+    <div class="doc-nav">
+      <a href="installation.html" class="next">Installation Guide &rarr;</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <span>wolfXcore Documentation</span>
+  <span>panel.xwolf.space</span>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>
