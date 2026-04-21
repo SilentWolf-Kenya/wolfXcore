@@ -44,23 +44,74 @@ export default () => {
         window.history.replaceState(null, document.title, `/servers${page <= 1 ? '' : `?page=${page}`}`);
     }, [page]);
 
-    useEffect(() => {
-        if (error) clearAndAddHttpError({ key: 'servers', error });
-        if (!error) clearFlashes('servers');
-    }, [error]);
-
     return (
         <PageContentBlock title={'Servers'} showFlashKey={'servers'}>
             <style>{`
-                @media (max-width: 480px) {
-                    .wxn-servers-header { flex-direction: column !important; align-items: flex-start !important; gap: 10px !important; }
-                    .wxn-server-grid { grid-template-columns: 1fr !important; }
-                    .wxn-server-card { padding: 0.7rem 0.9rem !important; gap: 0.55rem !important; }
-                    .wxn-server-card p { font-size: 0.8rem !important; }
+                /* ── Mobile-first responsive card grid ── */
+
+                .wxn-server-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+                    gap: 1rem;
+                    width: 100%;
+                    box-sizing: border-box;
+                }
+
+                /* Phones ≤ 600px: single column, full-width cards */
+                @media (max-width: 600px) {
+                    .wxn-server-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 0.75rem !important;
+                    }
+                    .wxn-server-card {
+                        width: 100% !important;
+                        box-sizing: border-box !important;
+                        padding: 0.85rem 0.9rem !important;
+                        min-width: 0 !important;
+                    }
+                    /* Allow name + badge to stack if too tight */
+                    .wxn-card-header {
+                        flex-wrap: wrap !important;
+                        gap: 0.5rem !important;
+                    }
+                    /* Stat boxes: 2 per row on phones */
+                    .wxn-stat-grid {
+                        grid-template-columns: repeat(2, 1fr) !important;
+                    }
+                    /* Shrink the header titles slightly */
+                    .wxn-servers-header h1 {
+                        font-size: 1rem !important;
+                    }
+                    .wxn-servers-header {
+                        flex-direction: column !important;
+                        align-items: flex-start !important;
+                        gap: 0.6rem !important;
+                    }
+                }
+
+                /* Very small phones ≤ 360px */
+                @media (max-width: 360px) {
+                    .wxn-server-card {
+                        padding: 0.7rem 0.75rem !important;
+                    }
+                    .wxn-stat-grid {
+                        grid-template-columns: repeat(2, 1fr) !important;
+                    }
                 }
             `}</style>
+
             {/* Header */}
-            <div className="wxn-servers-header" style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(0,255,0,0.12)', paddingBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div
+                className="wxn-servers-header"
+                style={{
+                    marginBottom: '1.5rem',
+                    borderBottom: '1px solid rgba(0,255,0,0.12)',
+                    paddingBottom: '1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                }}
+            >
                 <div>
                     <p style={{ fontFamily: fontDisplay, color: neon, fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
                         ● WOLFXCORE PANEL
@@ -89,11 +140,7 @@ export default () => {
                 <Pagination data={servers} onPageSelect={setPage}>
                     {({ items }) =>
                         items.length > 0 ? (
-                            <div className="wxn-server-grid" style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                                gap: '1rem',
-                            }}>
+                            <div className="wxn-server-grid">
                                 {items.map((server) => (
                                     <ServerRow key={server.uuid} server={server} />
                                 ))}

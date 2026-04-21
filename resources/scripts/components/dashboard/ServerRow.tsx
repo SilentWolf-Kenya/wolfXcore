@@ -60,7 +60,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
 
     const diskLimit = server.limits.disk !== 0 ? bytesToString(mbToBytes(server.limits.disk)) : 'Unlimited';
     const memoryLimit = server.limits.memory !== 0 ? bytesToString(mbToBytes(server.limits.memory)) : 'Unlimited';
-    const cpuLimit = server.limits.cpu !== 0 ? `${server.limits.cpu} %` : 'Unlimited';
+    const cpuLimit = server.limits.cpu !== 0 ? `${server.limits.cpu}%` : 'Unlimited';
 
     const currentStatus = stats?.status;
     const color = isSuspended ? '#ef4444' : statusColor(currentStatus);
@@ -83,28 +83,40 @@ export default ({ server, className }: { server: Server; className?: string }) =
                 gap: '0.75rem',
                 boxShadow: '0 2px 16px rgba(0,0,0,0.4)',
                 transition: 'border-color 0.2s, box-shadow 0.2s',
+                minWidth: 0,
+                boxSizing: 'border-box',
+                width: '100%',
             }}
         >
-            {/* Header row */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+            {/* Header row — wraps on narrow phones */}
+            <div
+                className="wxn-card-header"
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '0.75rem',
+                    flexWrap: 'nowrap',
+                }}
+            >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', minWidth: 0, flex: 1 }}>
                     <div style={{
-                        width: '2.25rem', height: '2.25rem',
+                        width: '2.1rem', height: '2.1rem',
                         background: 'rgba(0,255,0,0.08)',
                         border: '1px solid rgba(0,255,0,0.2)',
                         borderRadius: '4px',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         flexShrink: 0,
                     }}>
-                        <FontAwesomeIcon icon={faServer} style={{ color: '#00ff00', fontSize: '0.9rem' }} />
+                        <FontAwesomeIcon icon={faServer} style={{ color: '#00ff00', fontSize: '0.85rem' }} />
                     </div>
-                    <div style={{ minWidth: 0 }}>
+                    <div style={{ minWidth: 0, flex: 1 }}>
                         <p style={{
                             fontFamily: 'Orbitron, monospace',
-                            fontSize: '0.95rem',
+                            fontSize: '0.88rem',
                             fontWeight: 700,
                             color: '#ffffff',
-                            letterSpacing: '0.04em',
+                            letterSpacing: '0.03em',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -114,7 +126,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                         {server.description && (
                             <p style={{
                                 fontFamily: 'JetBrains Mono, monospace',
-                                fontSize: '0.72rem',
+                                fontSize: '0.68rem',
                                 color: 'rgba(255,255,255,0.4)',
                                 marginTop: '0.1rem',
                                 whiteSpace: 'nowrap',
@@ -130,18 +142,19 @@ export default ({ server, className }: { server: Server; className?: string }) =
                 {/* Status badge */}
                 <span style={{
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.65rem',
+                    fontSize: '0.62rem',
                     fontWeight: 700,
-                    letterSpacing: '0.12em',
+                    letterSpacing: '0.1em',
                     color: color,
                     background: `${color}18`,
                     border: `1px solid ${color}44`,
                     borderRadius: '3px',
-                    padding: '3px 8px',
+                    padding: '3px 7px',
                     flexShrink: 0,
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.35rem',
+                    gap: '0.3rem',
+                    whiteSpace: 'nowrap',
                 }}>
                     <span style={{
                         width: '6px', height: '6px',
@@ -149,21 +162,25 @@ export default ({ server, className }: { server: Server; className?: string }) =
                         background: color,
                         boxShadow: `0 0 4px ${color}`,
                         display: 'inline-block',
+                        flexShrink: 0,
                     }} />
                     {label}
                 </span>
             </div>
 
-            {/* IP + Stats row */}
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-                gap: '0.5rem',
-            }}>
-                {/* IP */}
+            {/* Stat boxes — 4 cols desktop, 2×2 on phones via CSS */}
+            <div
+                className="wxn-stat-grid"
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(4, 1fr)',
+                    gap: '0.5rem',
+                }}
+            >
+                {/* PORT */}
                 <div style={statBox}>
-                    <FontAwesomeIcon icon={faEthernet} style={{ color: 'rgba(0,255,0,0.5)', fontSize: '0.75rem' }} />
-                    <div>
+                    <FontAwesomeIcon icon={faEthernet} style={{ color: 'rgba(0,255,0,0.5)', fontSize: '0.72rem', flexShrink: 0 }} />
+                    <div style={{ minWidth: 0 }}>
                         <p style={statValue}>{address}</p>
                         <p style={statLabel}>PORT</p>
                     </div>
@@ -171,46 +188,34 @@ export default ({ server, className }: { server: Server; className?: string }) =
 
                 {/* CPU */}
                 <div style={{ ...statBox, ...(alarms.cpu ? alarmBox : {}) }}>
-                    <FontAwesomeIcon icon={faMicrochip} style={{ color: alarms.cpu ? '#ef4444' : 'rgba(0,255,0,0.5)', fontSize: '0.75rem' }} />
-                    <div>
-                        {!stats ? (
-                            <p style={statValue}>—</p>
-                        ) : (
-                            <p style={{ ...statValue, color: alarms.cpu ? '#ef4444' : '#fff' }}>
-                                {stats.cpuUsagePercent.toFixed(1)}%
-                            </p>
-                        )}
-                        <p style={statLabel}>CPU / {cpuLimit}</p>
+                    <FontAwesomeIcon icon={faMicrochip} style={{ color: alarms.cpu ? '#ef4444' : 'rgba(0,255,0,0.5)', fontSize: '0.72rem', flexShrink: 0 }} />
+                    <div style={{ minWidth: 0 }}>
+                        <p style={{ ...statValue, color: alarms.cpu ? '#ef4444' : '#fff' }}>
+                            {stats ? `${stats.cpuUsagePercent.toFixed(1)}%` : '—'}
+                        </p>
+                        <p style={statLabel}>CPU</p>
                     </div>
                 </div>
 
                 {/* RAM */}
                 <div style={{ ...statBox, ...(alarms.memory ? alarmBox : {}) }}>
-                    <FontAwesomeIcon icon={faMemory} style={{ color: alarms.memory ? '#ef4444' : 'rgba(0,255,0,0.5)', fontSize: '0.75rem' }} />
-                    <div>
-                        {!stats ? (
-                            <p style={statValue}>—</p>
-                        ) : (
-                            <p style={{ ...statValue, color: alarms.memory ? '#ef4444' : '#fff' }}>
-                                {bytesToString(stats.memoryUsageInBytes)}
-                            </p>
-                        )}
-                        <p style={statLabel}>RAM / {memoryLimit}</p>
+                    <FontAwesomeIcon icon={faMemory} style={{ color: alarms.memory ? '#ef4444' : 'rgba(0,255,0,0.5)', fontSize: '0.72rem', flexShrink: 0 }} />
+                    <div style={{ minWidth: 0 }}>
+                        <p style={{ ...statValue, color: alarms.memory ? '#ef4444' : '#fff' }}>
+                            {stats ? bytesToString(stats.memoryUsageInBytes) : '—'}
+                        </p>
+                        <p style={statLabel}>RAM</p>
                     </div>
                 </div>
 
-                {/* Disk */}
+                {/* DISK */}
                 <div style={{ ...statBox, ...(alarms.disk ? alarmBox : {}) }}>
-                    <FontAwesomeIcon icon={faHdd} style={{ color: alarms.disk ? '#ef4444' : 'rgba(0,255,0,0.5)', fontSize: '0.75rem' }} />
-                    <div>
-                        {!stats ? (
-                            <p style={statValue}>—</p>
-                        ) : (
-                            <p style={{ ...statValue, color: alarms.disk ? '#ef4444' : '#fff' }}>
-                                {bytesToString(stats.diskUsageInBytes)}
-                            </p>
-                        )}
-                        <p style={statLabel}>DISK / {diskLimit}</p>
+                    <FontAwesomeIcon icon={faHdd} style={{ color: alarms.disk ? '#ef4444' : 'rgba(0,255,0,0.5)', fontSize: '0.72rem', flexShrink: 0 }} />
+                    <div style={{ minWidth: 0 }}>
+                        <p style={{ ...statValue, color: alarms.disk ? '#ef4444' : '#fff' }}>
+                            {stats ? bytesToString(stats.diskUsageInBytes) : '—'}
+                        </p>
+                        <p style={statLabel}>DISK</p>
                     </div>
                 </div>
             </div>
@@ -222,16 +227,18 @@ export default ({ server, className }: { server: Server; className?: string }) =
                     display: 'block',
                     textAlign: 'center',
                     fontFamily: 'Orbitron, monospace',
-                    fontSize: '0.7rem',
+                    fontSize: '0.68rem',
                     fontWeight: 700,
                     letterSpacing: '0.12em',
                     color: '#00ff00',
                     background: 'transparent',
                     border: '1.5px solid #00ff00',
                     borderRadius: '4px',
-                    padding: '0.6rem 1rem',
+                    padding: '0.55rem 1rem',
                     textDecoration: 'none',
                     transition: 'background 0.2s, color 0.2s',
+                    boxSizing: 'border-box',
+                    width: '100%',
                 }}
                 onMouseEnter={(e) => {
                     e.currentTarget.style.background = '#00ff00';
@@ -252,10 +259,12 @@ const statBox: React.CSSProperties = {
     background: 'rgba(0,0,0,0.3)',
     border: '1px solid rgba(0,255,0,0.08)',
     borderRadius: '4px',
-    padding: '0.5rem 0.65rem',
+    padding: '0.45rem 0.55rem',
     display: 'flex',
     alignItems: 'center',
-    gap: '0.5rem',
+    gap: '0.4rem',
+    minWidth: 0,
+    overflow: 'hidden',
 };
 
 const alarmBox: React.CSSProperties = {
@@ -265,16 +274,20 @@ const alarmBox: React.CSSProperties = {
 
 const statValue: React.CSSProperties = {
     fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '0.8rem',
+    fontSize: '0.78rem',
     color: '#ffffff',
     fontWeight: 600,
     lineHeight: 1.2,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
 };
 
 const statLabel: React.CSSProperties = {
     fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '0.6rem',
+    fontSize: '0.58rem',
     color: 'rgba(255,255,255,0.3)',
     letterSpacing: '0.08em',
-    marginTop: '0.15rem',
+    marginTop: '0.12rem',
+    whiteSpace: 'nowrap',
 };
