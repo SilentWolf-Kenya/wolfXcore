@@ -4,6 +4,6 @@ namespace Pterodactyl\Exceptions\Service\Server;
 
 use Pterodactyl\Exceptions\PterodactylException;
 
-class RequiredVariableMissingException extends wolfXcoreException
+class RequiredVariableMissingException extends PterodactylException
 {
 }

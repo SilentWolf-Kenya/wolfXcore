@@ -4,6 +4,6 @@ namespace Pterodactyl\Exceptions\Repository;
 
 use Pterodactyl\Exceptions\PterodactylException;
 
-class RepositoryException extends wolfXcoreException
+class RepositoryException extends PterodactylException
 {
 }

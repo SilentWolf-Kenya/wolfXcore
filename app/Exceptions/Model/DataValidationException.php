@@ -9,7 +9,7 @@ use Pterodactyl\Exceptions\PterodactylException;
 use Illuminate\Contracts\Support\MessageProvider;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
-class DataValidationException extends wolfXcoreException implements HttpExceptionInterface, MessageProvider
+class DataValidationException extends PterodactylException implements HttpExceptionInterface, MessageProvider
 {
     /**
      * DataValidationException constructor.

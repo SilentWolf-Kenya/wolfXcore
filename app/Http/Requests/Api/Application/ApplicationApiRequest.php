@@ -29,12 +29,12 @@ abstract class ApplicationApiRequest extends FormRequest
      * Determine if the current user is authorized to perform
      * the requested action against the API.
      *
-     * @throws wolfXcoreException
+     * @throws PterodactylException
      */
     public function authorize(): bool
     {
         if (is_null($this->resource)) {
-            throw new wolfXcoreException('An ACL resource must be defined on API requests.');
+            throw new PterodactylException('An ACL resource must be defined on API requests.');
         }
 
         $token = $this->user()->currentAccessToken();

@@ -4,6 +4,6 @@ namespace Pterodactyl\Exceptions\Transformer;
 
 use Pterodactyl\Exceptions\PterodactylException;
 
-class InvalidTransformerLevelException extends wolfXcoreException
+class InvalidTransformerLevelException extends PterodactylException
 {
 }
