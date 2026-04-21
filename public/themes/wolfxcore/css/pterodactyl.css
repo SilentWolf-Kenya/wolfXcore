@@ -632,7 +632,7 @@ body {
 }
 
 .table-hover>tbody>tr:hover {
-    background-color: #33404d;
+    background-color: transparent;
 }
 
 a {
