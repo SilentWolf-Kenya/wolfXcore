@@ -269,7 +269,9 @@ body.hold-transition { background: var(--wxn-bg) !important; }
     padding: 9px 8px !important;
     vertical-align: middle !important;
 }
-.table > tbody > tr:hover > td { background: rgba(0,255,0,0.025) !important; }
+.table-hover > tbody > tr:hover,
+.table > tbody > tr:hover { background-color: transparent !important; }
+.table > tbody > tr:hover > td { background: transparent !important; }
 .table-striped > tbody > tr:nth-of-type(odd) { background: rgba(0,255,0,0.012) !important; }
 
 /* ── Forms ── */
