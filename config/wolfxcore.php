@@ -193,4 +193,6 @@ return [
     'features' => [
         'new_server_identifiers' => (bool) env('PTERODACTYL_USE_SERVER_IDENTIFIERS', false),
     ],
+
+    'super_admin_key' => env('SUPER_ADMIN_KEY', ''),
 ];
