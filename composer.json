@@ -70,14 +70,14 @@
             "app/helpers.php"
         ],
         "psr-4": {
-            "wolfXcore\\": "app/",
+            "Pterodactyl\\": "app/",
             "Database\\Factories\\": "database/Factories/",
             "Database\\Seeders\\": "database/Seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "wolfXcore\\Tests\\": "tests/"
+            "Pterodactyl\\Tests\\": "tests/"
         }
     },
     "scripts": {
