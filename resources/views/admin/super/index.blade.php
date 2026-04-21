@@ -1013,6 +1013,12 @@
                            placeholder="https://... or /wolf-logo.jpg" class="wxn-input"
                            oninput="document.getElementById('wxn-logo-preview').src=this.value||'{{ $logoUrl }}'">
                     <div class="wxn-hint">External URL or local path. Used as favicon + OG image.</div>
+
+                    <label class="wxn-label" style="margin-top:14px;">GITHUB ACCOUNT / REPO URL</label>
+                    <input type="text" name="github_account" value="{{ $githubAccount }}"
+                           placeholder="https://github.com/YourOrg/YourRepo  or  YourOrg/YourRepo" class="wxn-input">
+                    <div class="wxn-hint">Shown on the Admin Overview page as GitHub / Documentation / Support links. You can paste a full URL or just <code>Owner/Repo</code>.</div>
+
                     <button type="submit" class="btn btn-sm btn-success wxn-btn-submit" style="margin-top:12px;">
                         <i class="fa fa-save"></i> SAVE BRANDING
                     </button>

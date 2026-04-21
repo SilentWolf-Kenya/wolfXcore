@@ -21,6 +21,8 @@ class SuperAdminController extends Controller
     const LOGO_KEY          = 'settings::app:logo';
     const DEFAULT_LOGO      = '/wolf-logo.jpg';
     const DISABLED_TABS_KEY = 'settings::theme:disabled_tabs';
+    const GITHUB_KEY        = 'settings::app:github_account';
+    const DEFAULT_GITHUB    = 'https://github.com/SilentWolf-Kenya/wolfXcore';
 
     const ALL_SERVER_TABS = [
         'files', 'databases', 'schedules', 'users',
@@ -103,6 +105,7 @@ class SuperAdminController extends Controller
         $admins        = User::where('root_admin', true)->orderBy('name_last')->get();
         $allUsers      = User::orderBy('name_last')->paginate(25);
         $logoUrl       = self::getSiteLogo();
+        $githubAccount = self::getGithubAccount();
         $disabledTabs  = self::getDisabledTabs();
         $allTabs       = self::ALL_SERVER_TABS;
         $theme         = self::getAllThemeSettings();
@@ -118,7 +121,7 @@ class SuperAdminController extends Controller
         $eggs          = DB::table('eggs')->select('id', 'name', 'nest_id')->orderBy('nest_id')->orderBy('name')->get();
 
         return $this->view->make('admin.super.index', compact(
-            'admins', 'allUsers', 'logoUrl', 'disabledTabs', 'allTabs', 'theme', 'notifications', 'maintenanceOn',
+            'admins', 'allUsers', 'logoUrl', 'githubAccount', 'disabledTabs', 'allTabs', 'theme', 'notifications', 'maintenanceOn',
             'serverConfig', 'nodes', 'nests', 'eggs',
             'announcementActive', 'announcementType', 'announcementText'
         ));
@@ -188,8 +191,12 @@ class SuperAdminController extends Controller
 
     public function updateBranding(Request $request): RedirectResponse
     {
-        $request->validate(['logo_url' => 'required|string|max:500']);
-        Setting::updateOrCreate(['key' => self::LOGO_KEY], ['value' => trim($request->input('logo_url'))]);
+        $request->validate([
+            'logo_url'       => 'required|string|max:500',
+            'github_account' => 'nullable|string|max:500',
+        ]);
+        Setting::updateOrCreate(['key' => self::LOGO_KEY],    ['value' => trim($request->input('logo_url'))]);
+        Setting::updateOrCreate(['key' => self::GITHUB_KEY],  ['value' => trim($request->input('github_account', ''))]);
         $this->alert->success('Site branding updated.')->flash();
         return redirect()->route('admin.super.index');
     }
@@ -363,6 +370,14 @@ class SuperAdminController extends Controller
     public static function getSiteLogo(): string
     {
         return Setting::where('key', self::LOGO_KEY)->value('value') ?? self::DEFAULT_LOGO;
+    }
+
+    public static function getGithubAccount(): string
+    {
+        $raw = Setting::where('key', self::GITHUB_KEY)->value('value') ?? '';
+        if ($raw === '') return self::DEFAULT_GITHUB;
+        if (!str_starts_with($raw, 'http')) $raw = 'https://github.com/' . ltrim($raw, '/');
+        return rtrim($raw, '/');
     }
 
     public static function getDisabledTabs(): array

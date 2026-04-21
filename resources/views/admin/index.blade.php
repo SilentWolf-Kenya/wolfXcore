@@ -13,6 +13,7 @@
 @endsection
 
 @section('content')
+@php $ghUrl = \Pterodactyl\Http\Controllers\Admin\SuperAdminController::getGithubAccount(); @endphp
 <div class="row">
     <div class="col-xs-12">
         <div class="box {{ $version->isLatestPanel() ? 'box-success' : 'box-danger' }}">
@@ -26,7 +27,7 @@
                 @else
                     <i class="fa fa-exclamation-triangle" style="color:#ff5252;"></i>
                     Your panel is <strong>not up-to-date!</strong> The latest version is
-                    <a href="https://github.com/sil3nt-wolf/wolfXcore/releases" target="_blank"><code>{{ $version->getPanel() }}</code></a>
+                    <a href="{{ $ghUrl }}/releases" target="_blank"><code>{{ $version->getPanel() }}</code></a>
                     and you are currently running <code>{{ config('app.version') }}</code>.
                 @endif
             </div>
@@ -85,7 +86,7 @@
         </a>
     </div>
     <div class="col-xs-6 col-sm-3 text-center" style="margin-bottom:10px;">
-        <a href="https://github.com/sil3nt-wolf/wolfXcore/wiki" target="_blank">
+        <a href="{{ $ghUrl }}/wiki" target="_blank">
             <button class="btn btn-primary" style="width:100%;">
                 <i class="fa fa-fw fa-book"></i> Documentation
             </button>
@@ -93,14 +94,14 @@
     </div>
     <div class="clearfix visible-xs-block">&nbsp;</div>
     <div class="col-xs-6 col-sm-3 text-center" style="margin-bottom:10px;">
-        <a href="https://github.com/sil3nt-wolf/wolfXcore" target="_blank">
+        <a href="{{ $ghUrl }}" target="_blank">
             <button class="btn btn-primary" style="width:100%;">
                 <i class="fa fa-fw fa-github"></i> GitHub
             </button>
         </a>
     </div>
     <div class="col-xs-6 col-sm-3 text-center" style="margin-bottom:10px;">
-        <a href="https://github.com/sil3nt-wolf/wolfXcore" target="_blank">
+        <a href="{{ $ghUrl }}" target="_blank">
             <button class="btn btn-success" style="width:100%;">
                 <i class="fa fa-fw fa-star"></i> Support the Project
             </button>
