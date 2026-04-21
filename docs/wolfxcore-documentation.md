@@ -19,6 +19,7 @@
 11. [Deploying Code Changes to the VPS](#11-deploying-code-changes-to-the-vps)
 12. [Fresh VPS Panel Deployment](#12-fresh-vps-panel-deployment)
 13. [Wings Node Installation](#13-wings-node-installation)
+14. [Known Gotchas & Fixes](#14-known-gotchas--fixes)
 
 ---
 
@@ -39,7 +40,7 @@ wolfXcore is a self-hosted game server management panel. It provides:
 ## 2. Getting Started as a User
 
 ### Step 1 — Create an Account
-Go to `panel.xwolf.space` and click **Create an Account**. Fill in your email, username, and password.
+Go to `core.xwolf.space` and click **Create an Account**. Fill in your email, username, and password.
 
 ### Step 2 — Choose a Plan
 Browse the available plans on your dashboard. Each plan defines how much RAM, CPU, and disk space your server gets.
@@ -286,10 +287,10 @@ The Super Admin key is stored in your server's `.env` file and is **never stored
 **Step 1 — Generate a strong random key:**
 
 ```bash
-openssl rand -hex 32
+openssl rand -hex 20
 ```
 
-Copy the output (e.g. `a3f9b2c1d4e5...`).
+Copy the output (e.g. `8eb7064333cb264dad10e66edfeaba5e04aaf6e4`).
 
 **Step 2 — Add it to your VPS `.env`:**
 
@@ -308,6 +309,8 @@ php artisan config:cache
 ```
 
 > Store your key somewhere secure (e.g. a password manager). Anyone who knows this key can access the Super Admin panel.
+
+> **Note:** The key is read via `config('wolfxcore.super_admin_key')` which maps to `config/wolfxcore.php`. This mapping (`'super_admin_key' => env('SUPER_ADMIN_KEY', '')`) is already in the codebase — do not remove it or the key will silently fail even if set in `.env`.
 
 ---
 
@@ -742,6 +745,98 @@ journalctl -u wings -f
 | Systemd service | `wings.service` |
 
 > **Eggs (server templates)** are installed separately by the administrator via the admin panel at `/admin/nests`. wolfXcore ships with default Minecraft and Discord bot eggs from the standard Pterodactyl egg repository.
+
+---
+
+## 14. Known Gotchas & Fixes
+
+Issues encountered during the wolfXcore deployment and their solutions. Read this before debugging a broken fresh install.
+
+---
+
+### Admin panel shows broken layout / missing icons
+
+**Symptom:** The admin panel (`/admin`) loads but has no icons, broken info boxes, and the page heading runs together with the subtitle.
+
+**Cause:** The `Theme::getUrl()` helper in `app/Extensions/Themes/Theme.php` generates paths like `/themes/wolfxcore/vendor/...`, but after a fresh `git clone` the theme folder on disk is still named `pterodactyl` at `public/themes/pterodactyl/`. All admin CSS (Bootstrap, AdminLTE, FontAwesome) returns 404.
+
+**Fix (already applied in the repo):** The folder has been renamed to `public/themes/wolfxcore/` to match the URL path. On any fresh clone this is automatically correct.
+
+**If it happens again:** Verify the folder name on the VPS:
+```bash
+ls /var/www/wolfxcore/public/themes/
+# Should show: wolfxcore
+# If it shows: pterodactyl — run:
+mv /var/www/wolfxcore/public/themes/pterodactyl /var/www/wolfxcore/public/themes/wolfxcore
+```
+
+---
+
+### Super Admin key returns "not configured on this server"
+
+**Symptom:** You set `SUPER_ADMIN_KEY` in `.env` and ran `config:cache`, but the Super Admin auth page still shows the error.
+
+**Cause:** The `.env` key is only readable by Laravel if it has a corresponding entry in a config file. The key `config('wolfxcore.super_admin_key')` requires the line `'super_admin_key' => env('SUPER_ADMIN_KEY', '')` to exist inside `config/wolfxcore.php`.
+
+**Fix (already applied in the repo):** That line is now present in `config/wolfxcore.php`. Never remove it.
+
+**Verify it's working:**
+```bash
+cd /var/www/wolfxcore
+php artisan tinker --no-interaction <<< 'echo config("wolfxcore.super_admin_key");'
+# Should print your key, not an empty line
+```
+
+---
+
+### PHP class not found errors (wolfXcoreException, wolfXcore\Models\*, etc.)
+
+**Symptom:** Laravel logs show errors like `Class "wolfXcore\Http\Controllers\Admin\SuperAdminController" not found` or `Class "Pterodactyl\Exceptions\wolfXcoreException" not found`.
+
+**Cause:** The wolfXcore rebranding sed-replaced `Pterodactyl` → `wolfXcore` across all files, including inside blade templates that contain inline PHP (`{{ \wolfXcore\Models\Server::count() }}`), and in PHP `extends` / `use` statements that reference internal class names which were never renamed.
+
+**Fix (already applied in the repo):**
+- Blade files: all PHP class references (`\wolfXcore\Models\*`, `use wolfXcore\Http\...`) reverted to `\Pterodactyl\Models\*`, `use Pterodactyl\Http\...`
+- Exception classes: all `extends wolfXcoreException` reverted to `extends PterodactylException`
+- PHP autoload namespace in `composer.json` stays as `"Pterodactyl\\": "app/"` — the internal namespace was never renamed
+
+**Rule:** Only user-facing display text (page titles, console output, HTML) uses wolfXcore branding. PHP namespaces, class names, and internal identifiers all stay as `Pterodactyl`.
+
+---
+
+### Assets load slowly on first visit
+
+**Symptom:** The panel feels slow, especially on African mobile connections.
+
+**Fix (already applied on the VPS):**
+- Gzip enabled for all JS/CSS in `/etc/nginx/nginx.conf`
+- 1-year `Cache-Control: immutable` headers for all hashed `/assets/*` files
+- PHP-FPM switched to static pool with 10 workers
+- OPcache tuned to 256 MB with timestamp validation disabled
+
+The main JS bundle compresses from ~530 KB to ~164 KB. After the first load, all assets come from browser cache instantly.
+
+---
+
+### Panel returns 500 after fresh deploy
+
+**Symptom:** `curl https://core.xwolf.space/auth/login` returns HTTP 500.
+
+**Most common cause:** `APP_KEY` is empty or missing in `.env`.
+
+**Check and fix:**
+```bash
+grep 'APP_KEY' /var/www/wolfxcore/.env
+# If empty or missing:
+cd /var/www/wolfxcore
+php artisan key:generate --force
+php artisan config:clear && php artisan config:cache
+```
+
+**Second most common cause:** A renamed PHP class still referenced somewhere. Check the Laravel log:
+```bash
+head -5 /var/www/wolfxcore/storage/logs/laravel-$(date +%Y-%m-%d).log
+```
 
 ---
 
