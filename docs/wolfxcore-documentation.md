@@ -1,6 +1,6 @@
 # wolfXcore Documentation
 
-> **wolfXcore** is a cyberpunk-themed game server management panel built on top of the open-source wolfXcore framework. It lets you host, manage, and sell access to game servers, bots, and applications from one central dashboard.
+> **wolfXcore** is a cyberpunk-themed game server management panel built on top of the Pterodactyl framework. It lets you host, manage, and sell access to game servers, bots, and applications from one central dashboard.
 
 ---
 
@@ -17,6 +17,8 @@
 9. [Getting Support](#9-getting-support)
 10. [Super Admin System](#10-super-admin-system)
 11. [Deploying Code Changes to the VPS](#11-deploying-code-changes-to-the-vps)
+12. [Fresh VPS Panel Deployment](#12-fresh-vps-panel-deployment)
+13. [Wings Node Installation](#13-wings-node-installation)
 
 ---
 
@@ -191,10 +193,10 @@ Create hosting plans that define RAM, CPU, disk, and monthly price. These appear
 User Browser
      │
      ▼
-wolfXcore Panel (panel.xwolf.space)
+wolfXcore Panel (core.xwolf.space)
      │  ← API calls (HTTPS)
      ▼
-Wings Daemon (node.xwolf.space:8080)
+Wings Daemon (corenode.xwolf.space:8080)
      │  ← Docker
      ▼
 Game Server Containers
@@ -223,7 +225,7 @@ A: The egg's install script ran into an issue. Check the server's Install Log in
 **Q: I can't connect to my game server**
 A: Make sure:
 1. The server is showing as **Running** in the console
-2. Your server card on the dashboard shows your assigned **port number** (e.g., `25585`). Combine it with the node address (`node.xwolf.space`) to connect — for example: `node.xwolf.space:25585`. The full connection details are also available under the **Settings** tab.
+2. Your server card on the dashboard shows your assigned **port number** (e.g., `25585`). Combine it with the node address (`corenode.xwolf.space`) to connect — for example: `corenode.xwolf.space:25585`. The full connection details are also available under the **Settings** tab.
 3. The port is opened on the node's firewall
 
 **Q: My server ran out of memory and crashed**
@@ -245,8 +247,8 @@ A: Go to **Schedules** and create a new schedule. Set it to run a `restart` acti
 | Channel | Link | Best For |
 |---------|------|----------|
 | **Discord** | [discord.gg/tNYvK42j](https://discord.gg/tNYvK42j) | Real-time help, community chat |
-| **GitHub Issues** | [github.com/sil3nt-wolf/wolfXcore/issues](https://github.com/sil3nt-wolf/wolfXcore/issues) | Bug reports, feature requests |
-| **GitHub Wiki** | [github.com/sil3nt-wolf/wolfXcore/wiki](https://github.com/sil3nt-wolf/wolfXcore/wiki) | Full documentation |
+| **GitHub Issues** | [github.com/SilentWolf-Kenya/wolfXcore/issues](https://github.com/SilentWolf-Kenya/wolfXcore/issues) | Bug reports, feature requests |
+| **GitHub Wiki** | [github.com/SilentWolf-Kenya/wolfXcore/wiki](https://github.com/SilentWolf-Kenya/wolfXcore/wiki) | Full documentation |
 
 > For urgent issues, contact the admin directly.
 
@@ -259,7 +261,7 @@ The Super Admin system is an owner-level security layer built into wolfXcore. It
 ### How It Works
 
 - The Super Admin panel has **no sidebar link** — it is only accessible by navigating directly to the URL
-- Authentication page: `panel.xwolf.space/admin/wxn-super/auth`
+- Authentication page: `core.xwolf.space/admin/wxn-super/auth`
 - Only the correct secret key unlocks the panel
 - Once authenticated, the session stays active until you log out or close the browser
 - Closing the browser or logging out ends the Super Admin session
@@ -330,65 +332,417 @@ To change your Super Admin key at any time:
 
 ## 11. Deploying Code Changes to the VPS
 
-wolfXcore is developed in a GitHub-backed repository. The live server at `161.97.100.158` runs from `/var/www/wolfxcore`. Changes committed and pushed to `main` are deployed to the VPS using `git pull` followed by a set of post-pull steps.
+wolfXcore is developed in a GitHub-backed repository at `github.com/SilentWolf-Kenya/wolfXcore`. The live panel at `core.xwolf.space` runs from `/var/www/wolfxcore` on the VPS. All changes must be committed and pushed from the Replit workspace, then pulled to the VPS.
 
-### Standard Deployment (from Replit)
+### Commit → Push → Pull Workflow
 
-Run the sync script from the Replit workspace whenever you want to ship committed changes:
-
+**Step 1 — Make your changes in Replit, then commit:**
 ```bash
-VPS_HOST=161.97.100.158 VPS_PASSWORD=<root-password> bash scripts/vps-sync.sh
+git add -A
+git commit -m "your change description"
 ```
 
-What it does:
-1. SSH into the VPS as `root`
-2. Stash any locally modified files on the VPS (they are **not** deleted — run `git stash pop` to recover)
-3. Switch to `main` if needed, then run `git pull --ff-only origin main`
-4. Run `composer install --no-dev`
-5. Run `php artisan migrate --force`
-6. Clear all Laravel caches (`config`, `view`, `route`, `optimize`, `event`)
-7. Reload PHP-FPM and restart queue workers
-
-### Running Directly on the VPS
-
-If you are already logged into the VPS you can run the script locally:
-
+**Step 2 — Push to GitHub (Replit handles the token via Secrets):**
 ```bash
+git remote set-url origin "https://${GITHUB_TOKEN}@github.com/SilentWolf-Kenya/wolfXcore.git"
+git push origin main
+git remote set-url origin "https://github.com/SilentWolf-Kenya/wolfXcore.git"
+```
+
+**Step 3 — Pull and update on the VPS:**
+```bash
+ssh root@<VPS_IP>
 cd /var/www/wolfxcore
-bash scripts/vps-sync.sh --local
+git fetch origin main && git reset --hard origin/main
+composer install --no-dev --optimize-autoloader --no-interaction
+php artisan migrate --force
+php artisan config:clear && php artisan config:cache
+php artisan route:clear && php artisan route:cache
+php artisan view:clear && php artisan view:cache
+supervisorctl restart wolfxcore-worker:*
 ```
 
-### Options
+### Frontend-Only Changes (JS/TS/CSS)
 
-| Flag | Effect |
-|------|--------|
-| *(none)* | Stash local changes, pull, run post-pull steps |
-| `--local` | Skip SSH — run everything on the current machine |
-| `--reset` | **Hard-reset** local changes instead of stashing (changes are lost) |
-| `--dry-run` | Print every command that would run without executing anything |
-
-### Keeping the VPS Git-Clean
-
-To prevent local changes from accumulating on the VPS again:
-
-- **Never edit files directly on the VPS.** Always make changes in the Replit/GitHub repo, commit them, and deploy with the script.
-- If an emergency hotfix must be applied directly on the VPS, immediately commit the same change in the repo and run the sync script so the two environments stay in sync.
-- After the sync script runs, `git status` inside `/var/www/wolfxcore` should always be clean.
-
-### One-Time VPS Setup (if git pull has never worked)
-
-If the VPS git remote is not pointing to GitHub yet:
-
+Frontend assets (`public/assets/`) are built locally in Replit (not on the VPS):
 ```bash
-cd /var/www/wolfxcore
-git remote -v                     # check current remote
-# If missing or wrong:
-git remote set-url origin https://github.com/<org>/wolfxcore.git
-git fetch origin
+# In Replit workspace:
+yarn build          # or: npm run build
+git add -f public/assets/
+git commit -m "build: update frontend assets"
+# Then push + pull as above
 ```
 
-Then run `bash scripts/vps-sync.sh --local --reset` to do a hard initial sync.
+> The `public/assets/` directory is gitignored by default. The `-f` flag force-adds the built files.
+
+### Database Migrations
+
+Always run migrations after pulling code that adds new migrations:
+```bash
+php artisan migrate --force
+```
+
+### Keeping the VPS Clean
+
+- Never edit files directly on the VPS — always commit in Replit and pull to VPS
+- `git status` inside `/var/www/wolfxcore` should always show a clean working tree
+- If the VPS has local edits you want to discard: `git reset --hard origin/main`
 
 ---
 
-*wolfXcore is a custom fork of [wolfXcore Panel](https://wolfxcore.io) — MIT Licensed.*
+## 12. Fresh VPS Panel Deployment
+
+This section documents the complete process for deploying wolfXcore to a brand-new Ubuntu 24.04 VPS.
+
+### Prerequisites
+
+- Ubuntu 24.04 VPS with a public IP
+- Domains pointing to the VPS: `core.xwolf.space` (panel), `corenode.xwolf.space` (Wings)
+- Root SSH access
+- GitHub repository: `github.com/SilentWolf-Kenya/wolfXcore`
+
+### Step 1 — System packages
+
+```bash
+apt-get update && apt-get upgrade -y
+apt-get install -y software-properties-common curl git unzip
+add-apt-repository ppa:ondrej/php -y && apt-get update
+apt-get install -y php8.3 php8.3-fpm php8.3-cli php8.3-mysql php8.3-xml \
+  php8.3-curl php8.3-mbstring php8.3-zip php8.3-bcmath php8.3-gd \
+  php8.3-tokenizer php8.3-common php8.3-readline php8.3-intl \
+  mariadb-server redis-server nginx certbot python3-certbot-nginx
+```
+
+### Step 2 — MariaDB database
+
+```bash
+mysql -e "CREATE DATABASE wolfxcore DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -e "CREATE USER 'wolfxcore'@'127.0.0.1' IDENTIFIED BY 'WolfXcore@DB2026!';"
+mysql -e "GRANT ALL PRIVILEGES ON wolfxcore.* TO 'wolfxcore'@'127.0.0.1';"
+mysql -e "FLUSH PRIVILEGES;"
+```
+
+### Step 3 — Clone and configure code
+
+```bash
+git clone https://github.com/SilentWolf-Kenya/wolfXcore.git /var/www/wolfxcore
+cd /var/www/wolfxcore
+
+# Install Composer
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+composer install --no-dev --optimize-autoloader --no-interaction
+
+cp .env.example .env
+# Edit .env:
+#   APP_URL=https://core.xwolf.space
+#   DB_HOST=127.0.0.1, DB_DATABASE=wolfxcore, DB_USERNAME=wolfxcore, DB_PASSWORD=WolfXcore@DB2026!
+#   SESSION_COOKIE=wolfxcore_session
+#   CACHE_DRIVER=redis, SESSION_DRIVER=redis, QUEUE_DRIVER=redis
+nano .env
+
+# Generate key
+php artisan key:generate --force
+
+# Migrate and seed
+php artisan migrate --force
+php artisan db:seed --class=DatabaseSeeder
+php artisan db:seed --class=EggSeeder
+
+# Permissions
+chown -R www-data:www-data /var/www/wolfxcore
+chmod -R 755 /var/www/wolfxcore/storage /var/www/wolfxcore/bootstrap/cache
+```
+
+### Step 4 — PHP-FPM
+
+```bash
+# Edit /etc/php/8.3/fpm/php.ini:
+#   upload_max_filesize = 100M
+#   post_max_size = 100M
+systemctl enable --now php8.3-fpm
+```
+
+### Step 5 — Nginx + SSL
+
+```bash
+# Get SSL certificate
+certbot certonly --nginx -d core.xwolf.space --non-interactive --agree-tos --email admin@xwolf.space
+```
+
+Create `/etc/nginx/sites-available/wolfxcore`:
+```nginx
+server {
+    listen 443 ssl http2;
+    server_name core.xwolf.space;
+    root /var/www/wolfxcore/public;
+    index index.php;
+
+    ssl_certificate /etc/letsencrypt/live/core.xwolf.space/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/core.xwolf.space/privkey.pem;
+    ssl_session_cache shared:SSL:10m;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Robots-Tag none;
+    add_header Content-Security-Policy "frame-ancestors 'self'";
+    add_header X-Frame-Options DENY;
+    add_header Referrer-Policy same-origin;
+
+    location / { try_files $uri $uri/ /index.php?$query_string; }
+
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param PHP_VALUE "upload_max_filesize = 100M \n post_max_size=100M";
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_read_timeout 300;
+    }
+
+    location ~ /\.ht { deny all; }
+}
+server {
+    listen 80;
+    server_name core.xwolf.space;
+    return 301 https://$host$request_uri;
+}
+```
+
+```bash
+ln -s /etc/nginx/sites-available/wolfxcore /etc/nginx/sites-enabled/wolfxcore
+nginx -t && systemctl reload nginx
+```
+
+### Step 6 — Supervisor (queue workers)
+
+Create `/etc/supervisor/conf.d/wolfxcore.conf`:
+```ini
+[program:wolfxcore-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/wolfxcore/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/var/www/wolfxcore/storage/logs/worker.log
+stopwaitsecs=3600
+```
+
+```bash
+supervisorctl reread && supervisorctl update && supervisorctl start wolfxcore-worker:*
+```
+
+### Step 7 — Cron scheduler
+
+```bash
+echo "* * * * * www-data php /var/www/wolfxcore/artisan schedule:run >> /dev/null 2>&1" \
+  > /etc/cron.d/wolfxcore
+```
+
+### Step 8 — Create admin user
+
+```bash
+cd /var/www/wolfxcore
+php artisan tinker --no-interaction << 'PHP'
+$u = new \Pterodactyl\Models\User;
+$u->name_first = 'Silent'; $u->name_last = 'Wolf';
+$u->username = 'wolf'; $u->email = 'admin@xwolf.space';
+$u->password = bcrypt('YOUR_PASSWORD');
+$u->root_admin = 1;
+$u->save();
+echo 'Admin created: '.$u->email.PHP_EOL;
+PHP
+```
+
+---
+
+## 13. Wings Node Installation
+
+This documents how the Wings daemon was installed for the `wolfxcore` node (`corenode.xwolf.space`).
+
+### Prerequisites
+
+- The panel is already running at `core.xwolf.space`
+- `corenode.xwolf.space` DNS points to the VPS IP (same VPS for single-node setups)
+- Docker installed
+
+### Step 1 — Install Docker
+
+```bash
+curl -fsSL https://get.docker.com | sh
+systemctl enable --now docker
+```
+
+### Step 2 — Download Wings
+
+```bash
+mkdir -p /etc/pterodactyl /var/lib/pterodactyl/volumes /var/log/pterodactyl
+curl -L -o /usr/local/bin/wings \
+  https://github.com/pterodactyl/wings/releases/latest/download/wings_linux_amd64
+chmod +x /usr/local/bin/wings
+```
+
+### Step 3 — SSL certificate for the node
+
+```bash
+# Wings serves HTTPS directly on port 8080 — needs its own cert
+# Stop Nginx temporarily or use webroot method:
+mkdir -p /var/www/certbot
+# Add a temporary Nginx server block for corenode.xwolf.space on port 80, then:
+certbot certonly --webroot -w /var/www/certbot -d corenode.xwolf.space \
+  --non-interactive --agree-tos --email admin@xwolf.space
+```
+
+### Step 4 — Create the node in the panel
+
+Connect the node to the panel database (or use the admin UI at `/admin/nodes/new`):
+
+```bash
+cd /var/www/wolfxcore
+php artisan tinker --no-interaction << 'PHP'
+$loc = \Pterodactyl\Models\Location::firstOrCreate(
+    ['short' => 'nairobi'], ['long' => 'Nairobi, Kenya']
+);
+$node = new \Pterodactyl\Models\Node;
+$node->name            = 'wolfxcore';
+$node->description     = 'wolfXcore game server node - Nairobi';
+$node->location_id     = $loc->id;
+$node->fqdn            = 'corenode.xwolf.space';
+$node->scheme          = 'https';
+$node->behind_proxy    = false;
+$node->public          = true;
+$node->memory          = 6000;
+$node->memory_overallocate = 0;
+$node->disk            = 100000;
+$node->disk_overallocate   = 0;
+$node->upload_size     = 100;
+$node->daemon_token_id = substr(str_replace(['+','/','='],'',base64_encode(random_bytes(16))),0,16);
+$node->daemon_token    = encrypt(str_replace(['+','/','='],'',base64_encode(random_bytes(32))));
+$node->daemonListen    = 8080;
+$node->daemonSFTP      = 2022;
+$node->daemonBase      = '/var/lib/pterodactyl';
+$node->save();
+$conf = $node->getConfiguration();
+echo 'Node ID: '.$node->id.PHP_EOL;
+echo 'TOKEN_ID: '.$conf['token_id'].PHP_EOL;
+echo 'TOKEN: '.$conf['token'].PHP_EOL;
+PHP
+```
+
+Note the `TOKEN_ID` and `TOKEN` values for the next step.
+
+### Step 5 — Write Wings config
+
+Create `/etc/pterodactyl/config.yml`:
+```yaml
+debug: false
+uuid: <any-uuid-v4>
+token_id: <TOKEN_ID from above>
+token: <TOKEN from above>
+api:
+  host: 0.0.0.0
+  port: 8080
+  ssl:
+    enabled: true
+    cert: /etc/letsencrypt/live/corenode.xwolf.space/fullchain.pem
+    key: /etc/letsencrypt/live/corenode.xwolf.space/privkey.pem
+  upload_limit: 100
+system:
+  data: /var/lib/pterodactyl/volumes
+  sftp:
+    bind_port: 2022
+remote: https://core.xwolf.space
+allowed_mounts: []
+```
+
+### Step 6 — Systemd service for Wings
+
+Create `/etc/systemd/system/wings.service`:
+```ini
+[Unit]
+Description=wolfXcore Wings Daemon
+After=docker.service network-online.target
+Requires=docker.service
+StartLimitIntervalSec=180
+StartLimitBurst=30
+
+[Service]
+User=root
+WorkingDirectory=/etc/pterodactyl
+LimitNOFILE=4096
+PIDFile=/var/run/wings/daemon.pid
+ExecStart=/usr/local/bin/wings
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+systemctl daemon-reload
+systemctl enable --now wings
+systemctl status wings    # should show: active (running)
+```
+
+### Step 7 — Add allocations for the node
+
+Servers cannot be created until port allocations are added to the node. In the panel admin:
+
+1. Go to **Admin → Nodes → wolfxcore → Allocation**
+2. Add the node's IP and a port range, e.g.: IP `0.0.0.0`, ports `25565-25600`
+
+Or via the panel API:
+```bash
+# Add ports 25565-25600 to node ID 1
+cd /var/www/wolfxcore
+php artisan tinker --no-interaction << 'PHP'
+$node = \Pterodactyl\Models\Node::find(1);
+for ($p = 25565; $p <= 25600; $p++) {
+    \Pterodactyl\Models\Allocation::firstOrCreate(
+        ['node_id' => $node->id, 'port' => $p],
+        ['ip' => '0.0.0.0']
+    );
+}
+echo 'Allocations added: '.(\Pterodactyl\Models\Allocation::where('node_id',1)->count()).PHP_EOL;
+PHP
+```
+
+### Step 8 — Verify connectivity
+
+```bash
+# Wings should return 401 (auth required) — confirming it's live:
+curl -s -o /dev/null -w '%{http_code}' https://corenode.xwolf.space:8080/
+# Expected: 401
+
+# Check Wings logs:
+journalctl -u wings -f
+```
+
+### Current Node Summary
+
+| Setting | Value |
+|---------|-------|
+| Node name | wolfxcore |
+| FQDN | corenode.xwolf.space |
+| Port | 8080 (HTTPS) |
+| SFTP | 2022 |
+| Memory limit | 6,000 MB |
+| Disk limit | 100,000 MB (100 GB) |
+| Docker data | `/var/lib/pterodactyl/volumes` |
+| Wings binary | `/usr/local/bin/wings` |
+| Wings config | `/etc/pterodactyl/config.yml` |
+| Systemd service | `wings.service` |
+
+> **Eggs (server templates)** are installed separately by the administrator via the admin panel at `/admin/nests`. wolfXcore ships with default Minecraft and Discord bot eggs from the standard Pterodactyl egg repository.
+
+---
+
+*wolfXcore is a custom fork of the Pterodactyl Panel — MIT Licensed.*
