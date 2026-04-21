@@ -85,12 +85,12 @@
                         <th class="text-center"></th>
                     </tr>
                     @foreach($nest->eggs as $egg)
-                        <tr>
+                        <tr style="cursor:pointer;" onclick="window.location='{{ route('admin.nests.egg.view', $egg->id) }}'">
                             <td class="align-middle"><code>{{ $egg->id }}</code></td>
-                            <td class="align-middle"><a href="{{ route('admin.nests.egg.view', $egg->id) }}" data-toggle="tooltip" data-placement="right" title="{{ $egg->author }}">{{ $egg->name }}</a></td>
+                            <td class="align-middle">{{ $egg->name }} <small class="text-muted">&lt;{{ $egg->author }}&gt;</small></td>
                             <td class="col-xs-8 align-middle">{{ $egg->description }}</td>
                             <td class="text-center align-middle"><code>{{ $egg->servers->count() }}</code></td>
-                            <td class="align-middle">
+                            <td class="align-middle" onclick="event.stopPropagation()">
                                 <a href="{{ route('admin.nests.egg.export', ['egg' => $egg->id]) }}"><i class="fa fa-download"></i></a>
                             </td>
                         </tr>

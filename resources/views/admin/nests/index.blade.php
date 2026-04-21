@@ -40,9 +40,9 @@
                         <th class="text-center">Servers</th>
                     </tr>
                     @foreach($nests as $nest)
-                        <tr>
+                        <tr style="cursor:pointer;" onclick="window.location='{{ route('admin.nests.view', $nest->id) }}'">
                             <td class="middle"><code>{{ $nest->id }}</code></td>
-                            <td class="middle"><a href="{{ route('admin.nests.view', $nest->id) }}" data-toggle="tooltip" data-placement="right" title="{{ $nest->author }}">{{ $nest->name }}</a></td>
+                            <td class="middle">{{ $nest->name }} <small class="text-muted">&lt;{{ $nest->author }}&gt;</small></td>
                             <td class="col-xs-6 middle">{{ $nest->description }}</td>
                             <td class="text-center middle">{{ $nest->eggs_count }}</td>
                             <td class="text-center middle">{{ $nest->servers_count }}</td>
