@@ -445,6 +445,23 @@ input[type=checkbox], input[type=radio] { accent-color: var(--wxn-neon); cursor:
 .alert-warning                  { background: rgba(255,200,0,0.06)  !important; border: 1px solid rgba(255,200,0,0.22)  !important; color: #ffe066 !important; }
 
 /* ── Tabs ── */
+.nav-tabs-custom,
+.nav-tabs-custom.nav-tabs-floating {
+    background: var(--wxn-card) !important;
+    border: 1px solid var(--wxn-border) !important;
+    border-radius: 3px !important;
+    box-shadow: none !important;
+    margin-bottom: 20px !important;
+}
+.nav-tabs-custom > .nav-tabs,
+.nav-tabs-custom.nav-tabs-floating > .nav-tabs {
+    background: transparent !important;
+    border-bottom: 1px solid var(--wxn-border) !important;
+}
+.nav-tabs-custom > .tab-content {
+    background: transparent !important;
+    padding: 10px !important;
+}
 .nav-tabs { border-bottom: 1px solid var(--wxn-border) !important; }
 .nav-tabs > li > a {
     color: var(--wxn-dim) !important;
@@ -463,6 +480,37 @@ input[type=checkbox], input[type=radio] { accent-color: var(--wxn-neon); cursor:
     color: var(--wxn-neon) !important;
 }
 .tab-content { padding-top: 14px !important; }
+/* ── Small-box status panels ── */
+.small-box { border-radius: 3px !important; box-shadow: none !important; }
+.small-box.bg-gray {
+    background: rgba(0,255,0,0.06) !important;
+    border: 1px solid var(--wxn-border) !important;
+    color: var(--wxn-text) !important;
+}
+.small-box.bg-gray .inner h3,
+.small-box.bg-gray .inner p { color: var(--wxn-text) !important; }
+.small-box.bg-gray .small-box-footer {
+    background: rgba(0,255,0,0.06) !important;
+    color: var(--wxn-neon) !important;
+    border-top: 1px solid var(--wxn-border) !important;
+}
+.small-box.bg-gray .small-box-footer:hover { background: rgba(0,255,0,0.12) !important; }
+.small-box.bg-gray .icon i { color: rgba(0,255,0,0.15) !important; }
+.small-box.bg-blue {
+    background: rgba(0,100,255,0.18) !important;
+    border: 1px solid rgba(0,100,255,0.4) !important;
+}
+.small-box.bg-yellow {
+    background: rgba(255,180,0,0.15) !important;
+    border: 1px solid rgba(255,180,0,0.4) !important;
+    color: #ffe066 !important;
+}
+.small-box.bg-yellow .inner h3,
+.small-box.bg-yellow .inner p { color: #ffe066 !important; }
+.small-box.bg-maroon {
+    background: rgba(200,0,50,0.18) !important;
+    border: 1px solid rgba(200,0,50,0.4) !important;
+}
 
 /* ── Pagination ── */
 .pagination > li > a, .pagination > li > span {
