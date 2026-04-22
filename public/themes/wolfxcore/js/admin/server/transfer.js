@@ -21,7 +21,7 @@ $('#pNodeId').on('change', function () {
     let currentNode = $(this).val();
     const $modal = $('#transferServerModal');
 
-    $.each(Pterodactyl.nodeData, function (i, v) {
+    $.each(wolfXcore.nodeData, function (i, v) {
         if (v.id == currentNode) {
             $('#pAllocation').html('').select2({
                 data: v.allocations,
@@ -43,7 +43,7 @@ function updateAdditionalAllocations() {
     let currentNode = $('#pNodeId').val();
     const $modal = $('#transferServerModal');
 
-    $.each(Pterodactyl.nodeData, function (i, v) {
+    $.each(wolfXcore.nodeData, function (i, v) {
         if (v.id == currentNode) {
             let allocations = [];
 
